@@ -16,6 +16,12 @@
             </div>
             <div class="bg-white rounded-xl shadow-md p-6">
                 <h2 class="text-xl font-semibold mb-4">Code Editor</h2>
+                <!-- Language selection dropdown -->
+                <select id="languageSelect" class="w-full p-2 border border-gray-300 rounded-md mb-4">
+                    <option value="python">Python</option>
+                    <option value="java">Java</option>
+                    <option value="cpp">C++</option>
+                </select>
                 <textarea id="codeEditor" class="w-full h-64 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Write your code here..."></textarea>
                 <div class="mt-4 flex justify-between">
                     <button id="executeBtn" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500">Execute</button>
@@ -37,30 +43,24 @@
     </div>
     
     <script>
-         document.getElementById('executeBtn').addEventListener('click', async () => {
-        const code = document.getElementById('codeEditor').value;
-        try {
-            const response = await fetch(`/question/<%= question.id %>/execute`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ code, language: 'python' }), // Assuming Python for now
-            });
-            
-            const data = await response.json();
-            
-            // Show the output box and display the output from the backend
-            document.getElementById('outputBox').classList.remove('hidden');
-            document.getElementById('outputContent').textContent = data.output || 'No output'; // display the execution output
-        } catch (error) {
-            console.error('Error:', error);
-            
-            // Show error in the output box
-            document.getElementById('outputBox').classList.remove('hidden');
-            document.getElementById('outputContent').textContent = 'Error executing code: ' + error.message;
-        }
-    });
+        document.getElementById('executeBtn').addEventListener('click', async () => {
+            const code = document.getElementById('codeEditor').value;
+            try {
+                const response = await fetch(`/question/<%= question.id %>/execute`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ code, language: 'python' }), // Assuming Python for now
+                });
+                const data = await response.json();
+                // Display execution results
+                console.log(data);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
         document.getElementById('analyzeBtn').addEventListener('click', async () => {
             const code = document.getElementById('codeEditor').value;
             try {

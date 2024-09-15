@@ -1,4 +1,1 @@
 ﻿# Algo-Guide
-
-anshita
-arpita
