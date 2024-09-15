@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= question.title %> - LeetCode Helper</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6 text-center text-blue-600"><%= question.title %></h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-semibold mb-4">Question Description</h2>
+                <p class="text-gray-700"><%= question.description %></p>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-semibold mb-4">Code Editor</h2>
+                <textarea id="codeEditor" class="w-full h-64 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Write your code here..."></textarea>
+                <div class="mt-4 flex justify-between">
+                    <button id="executeBtn" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500">Execute</button>
+                    <button id="analyzeBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Analyze</button>
+                </div>
+            </div>
+        </div>
+        <div id="aiResponse" class="mt-8 bg-white rounded-xl shadow-md p-6 hidden">
+            <h2 class="text-xl font-semibold mb-4">AI Feedback</h2>
+            <div id="aiFeedback" class="text-gray-700"></div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('executeBtn').addEventListener('click', async () => {
+            const code = document.getElementById('codeEditor').value;
+            try {
+                const response = await fetch(`/question/<%= question.id %>/execute`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ code, language: 'python' }), // Assuming Python for now
+                });
+                const data = await response.json();
+                // Display execution results
+                console.log(data);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        document.getElementById('analyzeBtn').addEventListener('click', async () => {
+            const code = document.getElementById('codeEditor').value;
+            try {
+                const response = await fetch(`/question/<%= question.id %>/analyze`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ code, questionId: '<%= question.id %>' }),
+                });
+                const data = await response.json();
+                // Display AI feedback
+                document.getElementById('aiResponse').classList.remove('hidden');
+                document.getElementById('aiFeedback').innerHTML = data.analysis;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>
