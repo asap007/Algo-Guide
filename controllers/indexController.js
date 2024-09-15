@@ -11,7 +11,7 @@ exports.startSession = async (req, res) => {
     console.log('Received question:', question);
     
     try {
-        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         
         const prompt = `Given the LeetCode question "${question}", generate 3 multiple-choice questions to assess the user's understanding of the core concepts needed to solve this problem. Each question should have 4 options: Absolutely, Somewhat, Not sure, and No. The questions should cover fundamental concepts related to the problem without directly solving it.`;
         
