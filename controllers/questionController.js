@@ -16,37 +16,37 @@ exports.executeCode = async (req, res) => {
   const { code, language } = req.body;
 
   const languageVersions = {
-    python: '3.10.0',
-    javascript: '18.15.0',
-    java: '15.0.2',
-    // Add more languages and their versions as needed
+      python: '3.10.0',
+      java: '15.0.2',
+      cpp: '10.2.0',
+      javascript: '18.15.0'
+      // Add more languages and their versions as needed
   };
 
   try {
-    const response = await axios.post('https://emkc.org/api/v2/piston/execute', {
-      language,
-      version: languageVersions[language],
-      files: [
-        {
-          name: 'main',
-          content: code,
-        },
-      ],
-    });
+      const response = await axios.post('https://emkc.org/api/v2/piston/execute', {
+          language,
+          version: languageVersions[language],
+          files: [
+              {
+                  name: 'main',
+                  content: code
+              }
+          ]
+      });
 
-    console.log('Piston API response:', response.data);
+      console.log('Piston API response:', response.data);
 
-    // Send the output back to the frontend
-    res.json({ output: response.data.run.output });
+      // Send the execution output back to the frontend
+      res.json({ output: response.data.run.output });
   } catch (error) {
-    console.error('Error executing code:', error.response?.data || error.message);
-    res.status(500).json({
-      error: 'Failed to execute code',
-      details: error.response?.data || error.message,
-    });
+      console.error('Error executing code:', error.response?.data || error.message);
+      res.status(500).json({
+          error: 'Failed to execute code',
+          details: error.response?.data || error.message
+      });
   }
 };
-
 
 
 exports.analyzeCode = async (req, res) => {

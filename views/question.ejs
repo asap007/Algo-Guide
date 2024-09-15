@@ -29,25 +29,27 @@
                     <option value="python">Python</option>
                     <option value="java">Java</option>
                     <option value="cpp">C++</option>
+                    <option value="javascript">Javascript</option>
                 </select>
                 <textarea id="codeEditor"
                     class="w-full h-64 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Write your code here..."></textarea>
                 <div class="mt-4 flex justify-between">
                     <button id="executeBtn"
-                        class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500">Execute</button>
+                        class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500">Run Code</button>
                     <button id="analyzeBtn"
                         class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Analyze</button>
                 </div>
             </div>
         </div>
 
-        <!-- New Output Box -->
+        <!-- Execution Output Box -->
         <div id="outputBox" class="mt-8 bg-white rounded-xl shadow-md p-6 hidden">
             <h2 class="text-xl font-semibold mb-4">Execution Output</h2>
             <pre id="outputContent" class="bg-gray-100 p-4 rounded-md overflow-x-auto"></pre>
         </div>
 
+        <!-- AI Feedback Box -->
         <div id="aiResponse" class="mt-8 bg-white rounded-xl shadow-md p-6 hidden">
             <h2 class="text-xl font-semibold mb-4">AI Feedback</h2>
             <div id="aiFeedback" class="text-gray-700"></div>
@@ -68,12 +70,16 @@
                     body: JSON.stringify({ code, language }),  // Pass the selected language
                 });
                 const data = await response.json();
-                console.log(data);
+                
+                // Display execution output
+                document.getElementById('outputBox').classList.remove('hidden');
+                document.getElementById('outputContent').textContent = data.output || 'No output';
             } catch (error) {
                 console.error('Error:', error);
+                document.getElementById('outputBox').classList.remove('hidden');
+                document.getElementById('outputContent').textContent = 'Error executing code: ' + error.message;
             }
         });
-
 
         document.getElementById('analyzeBtn').addEventListener('click', async () => {
             const code = document.getElementById('codeEditor').value;
