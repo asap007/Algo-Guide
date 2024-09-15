@@ -3,6 +3,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
+
 exports.getQuestion = async (req, res) => {
   const { id } = req.params;
   // Fetch question details from LeetCode API or database
@@ -45,6 +46,8 @@ exports.executeCode = async (req, res) => {
     });
   }
 };
+
+
 
 exports.analyzeCode = async (req, res) => {
   const { code, questionId } = req.body;
