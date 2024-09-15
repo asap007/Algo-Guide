@@ -1,3 +1,1 @@
 ﻿# Algo-Guide
-
-anshita
