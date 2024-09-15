@@ -23,30 +23,44 @@
                 </div>
             </div>
         </div>
+        
+        <!-- New Output Box -->
+        <div id="outputBox" class="mt-8 bg-white rounded-xl shadow-md p-6 hidden">
+            <h2 class="text-xl font-semibold mb-4">Execution Output</h2>
+            <pre id="outputContent" class="bg-gray-100 p-4 rounded-md overflow-x-auto"></pre>
+        </div>
+
         <div id="aiResponse" class="mt-8 bg-white rounded-xl shadow-md p-6 hidden">
             <h2 class="text-xl font-semibold mb-4">AI Feedback</h2>
             <div id="aiFeedback" class="text-gray-700"></div>
         </div>
     </div>
+    
     <script>
-        document.getElementById('executeBtn').addEventListener('click', async () => {
-            const code = document.getElementById('codeEditor').value;
-            try {
-                const response = await fetch(`/question/<%= question.id %>/execute`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ code, language: 'python' }), // Assuming Python for now
-                });
-                const data = await response.json();
-                // Display execution results
-                console.log(data);
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        });
-
+         document.getElementById('executeBtn').addEventListener('click', async () => {
+        const code = document.getElementById('codeEditor').value;
+        try {
+            const response = await fetch(`/question/<%= question.id %>/execute`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ code, language: 'python' }), // Assuming Python for now
+            });
+            
+            const data = await response.json();
+            
+            // Show the output box and display the output from the backend
+            document.getElementById('outputBox').classList.remove('hidden');
+            document.getElementById('outputContent').textContent = data.output || 'No output'; // display the execution output
+        } catch (error) {
+            console.error('Error:', error);
+            
+            // Show error in the output box
+            document.getElementById('outputBox').classList.remove('hidden');
+            document.getElementById('outputContent').textContent = 'Error executing code: ' + error.message;
+        }
+    });
         document.getElementById('analyzeBtn').addEventListener('click', async () => {
             const code = document.getElementById('codeEditor').value;
             try {
@@ -63,6 +77,8 @@
                 document.getElementById('aiFeedback').innerHTML = data.analysis;
             } catch (error) {
                 console.error('Error:', error);
+                document.getElementById('aiResponse').classList.remove('hidden');
+                document.getElementById('aiFeedback').innerHTML = 'Error analyzing code: ' + error.message;
             }
         });
     </script>

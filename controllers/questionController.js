@@ -13,17 +13,36 @@ exports.getQuestion = async (req, res) => {
 
 exports.executeCode = async (req, res) => {
   const { code, language } = req.body;
-  
+
+  const languageVersions = {
+    python: '3.10.0',
+    javascript: '18.15.0',
+    java: '15.0.2',
+    // Add more languages and their versions as needed
+  };
+
   try {
     const response = await axios.post('https://emkc.org/api/v2/piston/execute', {
       language,
-      source: code
+      version: languageVersions[language],
+      files: [
+        {
+          name: 'main',
+          content: code,
+        },
+      ],
     });
-    
-    res.json(response.data);
+
+    console.log('Piston API response:', response.data);
+
+    // Send the output back to the frontend
+    res.json({ output: response.data.run.output });
   } catch (error) {
-    console.error('Error executing code:', error);
-    res.status(500).json({ error: 'Failed to execute code' });
+    console.error('Error executing code:', error.response?.data || error.message);
+    res.status(500).json({
+      error: 'Failed to execute code',
+      details: error.response?.data || error.message,
+    });
   }
 };
 
