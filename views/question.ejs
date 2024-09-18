@@ -8,6 +8,9 @@
         <%= question.title %> - LeetCode Helper
     </title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- CodeMirror CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
 </head>
 
 <body class="bg-gray-100">
@@ -29,11 +32,10 @@
                     <option value="python">Python</option>
                     <option value="java">Java</option>
                     <option value="cpp">C++</option>
-                    <option value="javascript">Javascript</option>
+                    <option value="javascript">JavaScript</option>
                 </select>
-                <textarea id="codeEditor"
-                    class="w-full h-64 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Write your code here..."></textarea>
+                <!-- Textarea that CodeMirror will replace -->
+                <textarea id="codeEditor" class="w-full h-64 p-2 border border-gray-300 rounded-md hidden"></textarea>
                 <div class="mt-4 flex justify-between">
                     <button id="executeBtn"
                         class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500">Run Code</button>
@@ -56,9 +58,48 @@
         </div>
     </div>
 
+    <!-- CodeMirror Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/clike/clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/xml/xml.min.js"></script>
+    
     <script>
+        // Initialize CodeMirror
+        const codeEditorElement = document.getElementById('codeEditor');
+        let codeMirrorEditor = CodeMirror.fromTextArea(codeEditorElement, {
+            mode: 'javascript',  // Default mode
+            theme: 'dracula',     // Theme
+            lineNumbers: true,    // Enable line numbers
+            tabSize: 2,
+            indentWithTabs: true
+        });
+
+        // Change language mode based on selection
+        document.getElementById('languageSelect').addEventListener('change', function () {
+            const selectedLanguage = this.value;
+            let mode;
+            switch (selectedLanguage) {
+                case 'python':
+                    mode = 'python';
+                    break;
+                case 'java':
+                    mode = 'text/x-java';
+                    break;
+                case 'cpp':
+                    mode = 'text/x-c++src';
+                    break;
+                case 'javascript':
+                    mode = 'javascript';
+                    break;
+            }
+            codeMirrorEditor.setOption('mode', mode);
+        });
+
+        // Handle Run Code
         document.getElementById('executeBtn').addEventListener('click', async () => {
-            const code = document.getElementById('codeEditor').value;
+            const code = codeMirrorEditor.getValue();  // Get the value from CodeMirror
             const language = document.getElementById('languageSelect').value;  // Get the selected language
 
             try {
@@ -67,7 +108,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ code, language }),  // Pass the selected language
+                    body: JSON.stringify({ code, language }),  // Pass code and language to backend
                 });
                 const data = await response.json();
                 
@@ -81,15 +122,16 @@
             }
         });
 
+        // Handle Analyze Code
         document.getElementById('analyzeBtn').addEventListener('click', async () => {
-            const code = document.getElementById('codeEditor').value;
+            const code = codeMirrorEditor.getValue();  // Get code from CodeMirror
             try {
                 const response = await fetch(`/question/<%= question.id %>/analyze`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ code, questionId: '<%= question.id %>' }),
+                    body: JSON.stringify({ code, questionId: '<%= question.id %>' }),  // Send code to backend for analysis
                 });
                 const data = await response.json();
                 // Display AI feedback
