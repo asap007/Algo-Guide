@@ -29,8 +29,8 @@
                 <h2 class="text-xl font-semibold mb-4">Code Editor</h2>
                 <!-- Language selection dropdown -->
                 <select id="languageSelect" class="w-full p-2 border border-gray-300 rounded-md mb-4">
+                    <option value="java" selected>Java</option>
                     <option value="python">Python</option>
-                    <option value="java">Java</option>
                     <option value="cpp">C++</option>
                     <option value="javascript">JavaScript</option>
                 </select>
@@ -66,17 +66,31 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/xml/xml.min.js"></script>
     
     <script>
+        // Boilerplate code for each language
+        const boilerplates = {
+            python: `def main():\n    # Your code here\n    pass\n\nif __name__ == "__main__":\n    main()\n`,
+            
+            java: `public class Main {\n    public static void main(String[] args) {\n        // Your code here\n    }\n}\n`,
+            
+            cpp: `#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}\n`,
+            
+            javascript: `function main() {\n    // Your code here\n}\n\nmain();\n`
+        };
+    
         // Initialize CodeMirror
         const codeEditorElement = document.getElementById('codeEditor');
         let codeMirrorEditor = CodeMirror.fromTextArea(codeEditorElement, {
-            mode: 'javascript',  // Default mode
-            theme: 'dracula',     // Theme
-            lineNumbers: true,    // Enable line numbers
+            mode: 'python',  // Default mode (Python)
+            theme: 'dracula', // Theme
+            lineNumbers: true, // Enable line numbers
             tabSize: 2,
             indentWithTabs: true
         });
-
-        // Change language mode based on selection
+    
+        // Set default boilerplate code
+        codeMirrorEditor.setValue(boilerplates['java']);
+    
+        // Change language mode and populate boilerplate code based on selection
         document.getElementById('languageSelect').addEventListener('change', function () {
             const selectedLanguage = this.value;
             let mode;
@@ -95,13 +109,14 @@
                     break;
             }
             codeMirrorEditor.setOption('mode', mode);
+            codeMirrorEditor.setValue(boilerplates[selectedLanguage]); // Set boilerplate for the selected language
         });
-
+    
         // Handle Run Code
         document.getElementById('executeBtn').addEventListener('click', async () => {
             const code = codeMirrorEditor.getValue();  // Get the value from CodeMirror
             const language = document.getElementById('languageSelect').value;  // Get the selected language
-
+    
             try {
                 const response = await fetch(`/question/<%= question.id %>/execute`, {
                     method: 'POST',
@@ -121,7 +136,7 @@
                 document.getElementById('outputContent').textContent = 'Error executing code: ' + error.message;
             }
         });
-
+    
         // Handle Analyze Code
         document.getElementById('analyzeBtn').addEventListener('click', async () => {
             const code = codeMirrorEditor.getValue();  // Get code from CodeMirror
@@ -144,6 +159,7 @@
             }
         });
     </script>
+    
 </body>
 
 </html>
