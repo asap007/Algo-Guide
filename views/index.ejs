@@ -28,6 +28,18 @@
                                    placeholder="e.g., Two Sum, Binary Tree Inorder Traversal">
                             <i class="fas fa-search absolute right-3 top-10 text-gray-400"></i>
                         </div>
+                        <!-- Language Selection Dropdown -->
+                        <div class="relative">
+                            <label for="language" class="block text-sm font-medium text-gray-700 mb-2">Select Preferred Language:</label>
+                            <select id="language" x-model="selectedLanguage" required
+                                    class="block w-full px-4 py-3 rounded-md bg-gray-50 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 ease-in-out">
+                                <option value="" disabled>Select a language</option>
+                                <option value="python">Python</option>
+                                <option value="java">Java</option>
+                                <option value="cpp">C++</option>
+                                <option value="javascript">JavaScript</option>
+                            </select>
+                            </div>
                         <div class="mt-6">
                             <button type="submit" 
                                     class="w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 ease-in-out transform hover:-translate-y-1">
@@ -118,6 +130,7 @@
         document.addEventListener('alpine:init', () => {
             Alpine.data('assessmentApp', () => ({
                 question: '',
+                selectedLanguage: '',  // Added selected language
                 assessmentQuestions: [],
                 currentQuestionIndex: 0,
                 showConceptQuestion: true,
@@ -135,7 +148,10 @@
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ question: this.question }),
+                        body: JSON.stringify({ 
+                            question: this.question,
+                            language: this.selectedLanguage  // Send the selected language
+                        }),
                     })
                     .then(response => {
                         if (!response.ok) {

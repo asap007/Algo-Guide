@@ -6,18 +6,33 @@ exports.getHomePage = (req, res) => {
 };
 
 exports.startSession = async (req, res) => {
-    const { question } = req.body;
+    const { question, language } = req.body; // User-selected language
     console.log('Received question:', question);
+    console.log('Selected language:', language);
     
     try {
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        
+        // Determine the language to generate code snippets
+        const languageMap = {
+          "C++": "C++",
+          "cpp": "C++",   // Handle lowercase input from dropdown
+          "JavaScript": "JavaScript",
+          "javascript": "JavaScript",
+          "Python": "Python",
+          "python": "Python",
+          "Java": "Java",
+          "java": "Java"
+        };
+        
+        const selectedLanguage = languageMap[language] || "Java"; // Default to Python if language is not provided
         
         const prompt = `Given the LeetCode question "${question}", generate a series of 3-4 interactive questions to assess and teach the user about the core concepts needed to solve this problem. For each question, provide:
 
 1. A yes/no question about a key concept.
 2. If the user answers yes, a multiple-choice question to test their understanding, with 4 options (a, b, c, d) and the correct answer.
 3. If the user answers no or incorrectly, a brief explanation of the concept and how it relates to the problem.
-4. A short code snippet demonstrating the concept in Python.
+4. A short code snippet demonstrating the concept in ${selectedLanguage}.
 
 Format the response as a JSON array of objects. Do not include any markdown formatting or code block syntax in your response. Here's an example structure:
 
@@ -35,7 +50,7 @@ Format the response as a JSON array of objects. Do not include any markdown form
       "correctAnswer": "b"
     },
     "explanation": "Reversing an array involves swapping elements from the start and end, moving towards the center. This process touches each element once, resulting in a time complexity of O(n), where n is the number of elements in the array.",
-    "codeSnippet": "def reverse_array(arr):\n    left, right = 0, len(arr) - 1\n    while left < right:\n        arr[left], arr[right] = arr[right], arr[left]\n        left += 1\n        right -= 1\n    return arr"
+    "codeSnippet": "def reverse_array(arr):\\n    left, right = 0, len(arr) - 1\\n    while left < right:\\n        arr[left], arr[right] = arr[right], arr[left]\\n        left += 1\\n        right -= 1\\n    return arr"
   }
 ]`;
 
@@ -48,7 +63,6 @@ Format the response as a JSON array of objects. Do not include any markdown form
         assessmentQuestions = assessmentQuestions.replace(/```json\n|\n```/g, '');
         assessmentQuestions = assessmentQuestions.replace(/[\r\n]+/g, ''); 
 
-        
         // Ensure the response is valid JSON
         try {
             const parsedQuestions = JSON.parse(assessmentQuestions);
