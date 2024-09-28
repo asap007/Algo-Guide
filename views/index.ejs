@@ -144,10 +144,30 @@
     </div>
 
     <script>
+        // Add this function to your existing script
+        function saveResponse(question, response) {
+            fetch('/save-response', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ question, response }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.success) {
+                    console.error('Failed to save response');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    
         document.addEventListener('alpine:init', () => {
             Alpine.data('assessmentApp', () => ({
                 question: '',
-                selectedLanguage: '',  // Added selected language
+                selectedLanguage: '',
                 assessmentQuestions: [],
                 currentQuestionIndex: 0,
                 showConceptQuestion: true,
@@ -157,7 +177,7 @@
                 isCorrect: null,
                 loading: false,
                 showQuestions: false,
-
+    
                 startAssessment() {
                     this.loading = true;
                     fetch('/start-session', {
@@ -197,26 +217,36 @@
                             alert(`An error occurred: ${error.message}`);
                         });
                 },
-
+    
+                // Modified handleConceptAnswer function
                 handleConceptAnswer(knows) {
+                    const question = this.assessmentQuestions[this.currentQuestionIndex].conceptQuestion;
+                    const response = knows ? 'Yes' : 'No';
+                    saveResponse(question, response);
+    
                     if (knows) {
                         this.showConceptQuestion = false;
                         this.showMultipleChoice = true;
                     } else {
                         this.showExplanation = true;
                         this.showConceptQuestion = false;
-                        this.isCorrect = null; // User did not attempt multiple-choice
+                        this.isCorrect = null;
                     }
                 },
-
+    
+                // Modified checkAnswer function
                 checkAnswer(selectedKey) {
                     this.selectedAnswer = selectedKey;
+                    const question = this.assessmentQuestions[this.currentQuestionIndex].multipleChoice.question;
+                    const response = selectedKey;
+                    saveResponse(question, response);
+    
                     const correctAnswer = this.assessmentQuestions[this.currentQuestionIndex].multipleChoice.correctAnswer;
                     this.isCorrect = selectedKey === correctAnswer;
                     this.showExplanation = true;
                     this.showMultipleChoice = false;
                 },
-
+    
                 nextQuestion() {
                     this.currentQuestionIndex++;
                     if (this.currentQuestionIndex < this.assessmentQuestions.length) {
@@ -244,6 +274,7 @@
             }));
         });
     </script>
+    
 </body>
 
 </html>
