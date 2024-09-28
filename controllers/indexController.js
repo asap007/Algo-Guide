@@ -31,7 +31,7 @@ exports.startSession = async (req, res) => {
       
       const selectedLanguage = languageMap[language] || "Java"; // Default to Python if language is not provided
       
-      const prompt = `Given the LeetCode question "${question}", generate a series of 3-4 interactive questions to assess and teach the user about the core concepts needed to solve this problem. For each question, provide:
+      const prompt = `Make sure to return json data, Given the LeetCode question "${question}", generate a series of 3-4 interactive questions to assess and teach the user about the core concepts needed to solve this specific problem in the most effecient way. For each question, provide:
 
     1. A yes/no question about a key concept.
     2. If the user answers yes, a multiple-choice question to test their understanding, with 4 options (a, b, c, d) and the correct answer.
