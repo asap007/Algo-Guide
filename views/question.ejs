@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= question.title %> - LeetCode Helper</title>
+    <title>
+        <%= question.title %> - LeetCode Helper
+    </title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
@@ -32,11 +34,13 @@
             perspective: 1000px;
         }
 
-        .editor, .error {
+        .editor,
+        .error {
             transition: all 0.3s ease-in-out;
         }
 
-        .editor:hover, .error:hover {
+        .editor:hover,
+        .error:hover {
             transform: translateY(-5px) rotateX(5deg);
         }
 
@@ -58,9 +62,17 @@
         }
 
         @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0px); }
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
         }
 
         .floating {
@@ -69,14 +81,22 @@
     </style>
 </head>
 
-<body class="bg-gray-900 text-white min-h-screen">
+<body class="bg-[#121212] text-white min-h-screen font-mono">
     <div class="container mx-auto px-4 py-8">
-        <h1 class="text-5xl font-extrabold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary animate-pulse"><%= question.title %></h1>
+        <h1
+            class="text-5xl md:text-7xl font-extrabold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-[#7E30E1] to-[#E26EE5] animate-gradient-x-slow">
+            <%= question.title %>
+        </h1>
+
         <div class="editor-container grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="editor bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-2xl">
-                <div class="bg-gray-700 p-4 flex justify-between items-center">
-                    <h2 class="text-2xl font-semibold text-primary">Code Editor</h2>
-                    <select id="languageSelect" class="bg-gray-800 text-white p-2 rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary">
+            <div
+                class="editor bg-[#202026] rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-2xl relative">
+                <div class="bg-[#18181E] p-4 flex justify-between items-center">
+                    <h2 class="text-2xl font-semibold text-[#7E30E1]">
+                        Code Editor
+                    </h2>
+                    <select id="languageSelect"
+                        class="bg-[#202026] text-white p-2 rounded-md border border-[#49108B] focus:outline-none focus:ring-2 focus:ring-[#7E30E1]">
                         <option value="java" selected>Java</option>
                         <option value="python">Python</option>
                         <option value="cpp">C++</option>
@@ -84,106 +104,115 @@
                     </select>
                 </div>
                 <div id="codeEditor" class="w-full h-96"></div>
-                <div class="p-4">
-                    <button id="executeBtn" class="btn bg-secondary hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full w-full transition-all duration-300 transform hover:scale-105">
-                        Run Code
-                    </button>
-                </div>
             </div>
-            <div class="error bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-2xl">
-                <div class="bg-gray-700 p-4">
-                    <h2 class="text-2xl font-semibold text-primary">Error Input</h2>
+            <div
+                class="error bg-[#202026] rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-2xl">
+                <div class="bg-[#18181E] p-4">
+                    <h2 class="text-2xl font-semibold text-[#7E30E1]">
+                        Error Input
+                    </h2>
                 </div>
-                <textarea id="errorInput" class="w-full h-48 bg-gray-900 text-white p-4 resize-none focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+                <textarea id="errorInput"
+                    class="w-full h-48 bg-[#121212] text-[#F3F8FF] p-4 resize-none focus:outline-none focus:ring-2 focus:ring-[#7E30E1]"></textarea>
                 <div class="p-4">
-                    <button id="analyzeBtn" class="btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full transition-all duration-300 transform hover:scale-105">
+                    <button id="analyzeBtn"
+                        class="btn bg-[#7E30E1] hover:bg-[#49108B] text-white font-bold py-2 px-4 rounded-full w-full transition-all duration-300 transform hover:scale-105">
                         Analyze
                     </button>
                 </div>
                 <div id="aiResponse" class="mt-4 p-4 hidden">
-                    <h2 class="text-2xl font-semibold mb-4 text-primary">AI Feedback</h2>
-                    <div id="aiFeedback" class="p-4 bg-gray-700 rounded-lg shadow-inner"></div>
+                    <h2 class="text-2xl font-semibold mb-4 text-[#7E30E1]">
+                        AI Feedback
+                    </h2>
+                    <div id="aiFeedback" class="prose p-4 bg-[#18181E] rounded-lg shadow-inner max-w-none">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="character fixed bottom-0 right-0 w-40 h-40 bg-contain bg-no-repeat bg-center cursor-pointer floating" style="background-image: url('/images/character.png');"></div>
+    <!-- You likely will not be needing this unless it relates to feedback 
+   - for an edu website it could represent the user's current state or 
+   - knowledge, feel free to re-purpose as needed. Make sure paths for static assets are set up correctly in Express!
+   -->
+    <div class="character fixed bottom-0 right-0 w-40 h-40 bg-contain bg-no-repeat bg-center cursor-pointer floating"
+        style="background-image: url('/images/character.png');">
+    </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/clike/clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/xml/xml.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/python/python.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/clike/clike.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/xml/xml.min.js"></script>
+<script>
+    const boilerplates = {
+        python: `def main():\n    # Your code here\n    pass\n\nif __name__ == "__main__":\n    main()\n`,
+        java: `public class Main {\n    public static void main(String[] args) {\n        // Your code here\n    }\n}\n`,
+        cpp: `#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}\n`,
+        javascript: `function main() {\n    // Your code here\n}\n\nmain();\n`
+    };
 
-    <script>
-        const boilerplates = {
-            python: `def main():\n    # Your code here\n    pass\n\nif __name__ == "__main__":\n    main()\n`,
-            java: `public class Main {\n    public static void main(String[] args) {\n        // Your code here\n    }\n}\n`,
-            cpp: `#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}\n`,
-            javascript: `function main() {\n    // Your code here\n}\n\nmain();\n`
-        };
+    const codeMirrorEditor = CodeMirror(document.getElementById('codeEditor'), {
+        mode: 'text/x-java',
+        theme: 'dracula',
+        lineNumbers: true,
+        autoCloseBrackets: true,
+        matchBrackets: true,
+        indentUnit: 4,
+        tabSize: 4,
+        indentWithTabs: true,
+        lineWrapping: true,
+    });
 
-        const codeMirrorEditor = CodeMirror(document.getElementById('codeEditor'), {
-            mode: 'text/x-java',
-            theme: 'dracula',
-            lineNumbers: true,
-            autoCloseBrackets: true,
-            matchBrackets: true,
-            indentUnit: 4,
-            tabSize: 4,
-            indentWithTabs: true,
-            lineWrapping: true,
-        });
+    codeMirrorEditor.setValue(boilerplates['java']);
 
-        codeMirrorEditor.setValue(boilerplates['java']);
+    document.getElementById('languageSelect').addEventListener('change', function () {
+        const selectedLanguage = this.value;
+        let mode;
+        switch (selectedLanguage) {
+            case 'python':
+                mode = 'python';
+                break;
+            case 'java':
+                mode = 'text/x-java';
+                break;
+            case 'cpp':
+                mode = 'text/x-c++src';
+                break;
+            case 'javascript':
+                mode = 'javascript';
+                break;
+        }
+        codeMirrorEditor.setOption('mode', mode);
+        codeMirrorEditor.setValue(boilerplates[selectedLanguage]);
+    });
 
-        document.getElementById('languageSelect').addEventListener('change', function () {
-            const selectedLanguage = this.value;
-            let mode;
-            switch (selectedLanguage) {
-                case 'python':
-                    mode = 'python';
-                    break;
-                case 'java':
-                    mode = 'text/x-java';
-                    break;
-                case 'cpp':
-                    mode = 'text/x-c++src';
-                    break;
-                case 'javascript':
-                    mode = 'javascript';
-                    break;
-            }
-            codeMirrorEditor.setOption('mode', mode);
-            codeMirrorEditor.setValue(boilerplates[selectedLanguage]);
-        });
+    document.getElementById('analyzeBtn').addEventListener('click', async () => {
+        const code = codeMirrorEditor.getValue();
+        const error = document.getElementById('errorInput').value;
+        try {
+            const response = await fetch(`/question/<%= question.id %>/analyze`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code, error, questionId: '<%= question.id %>' })
+            });
+            const data = await response.json();
+            document.getElementById('aiResponse').classList.remove('hidden');
+            document.getElementById('aiFeedback').innerHTML = data.analysis;
+        } catch (error) {
+            document.getElementById('aiResponse').classList.remove('hidden');
+            document.getElementById('aiFeedback').textContent = 'Error analyzing code: ' + error.message;
+        }
+    });
 
-        document.getElementById('analyzeBtn').addEventListener('click', async () => {
-            const code = codeMirrorEditor.getValue();
-            const error = document.getElementById('errorInput').value;
-            try {
-                const response = await fetch(`/question/<%= question.id %>/analyze`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ code, error, questionId: '<%= question.id %>' })
-                });
-                const data = await response.json();
-                document.getElementById('aiResponse').classList.remove('hidden');
-                document.getElementById('aiFeedback').innerHTML = data.analysis;
-            } catch (error) {
-                document.getElementById('aiResponse').classList.remove('hidden');
-                document.getElementById('aiFeedback').textContent = 'Error analyzing code: ' + error.message;
-            }
-        });
-
-        document.querySelector('.character').addEventListener('click', function() {
-            this.style.transform = 'scale(1.2) rotate(360deg)';
-            setTimeout(() => {
-                this.style.transform = '';
-            }, 1000);
-        });
-    </script>
+    document.querySelector('.character').addEventListener('click', function () {
+        this.style.transform = 'scale(1.2) rotate(360deg)';
+        setTimeout(() => {
+            this.style.transform = '';
+        }, 1000);
+    });
+</script>
 </body>
 
 </html>
