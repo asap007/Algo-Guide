@@ -39,58 +39,42 @@
             transition: all 0.3s ease-in-out;
         }
 
-        .editor:hover,
-        .error:hover {
-            transform: translateY(-5px) rotateX(5deg);
-        }
-
         .btn {
             transition: all 0.3s ease-in-out;
         }
 
         .btn:hover {
-            transform: translateY(-2px) scale(1.05);
+            transform: translateY(-2px) scale(1);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
-
-        .character {
-            transition: all 0.5s ease-in-out;
+        #analyzeBtn
+        {
+            box-shadow:2px 3px 2px #f0c9ec;
+            width: 260px;
+            font-size: 2.9vh;
+            font-weight: 500;
+            margin-left: 450px;
         }
-
-        .character:hover {
-            transform: scale(1.1) rotate(5deg);
+        .logout-btn
+        {
+            padding: 10px 25px;
+            font-size: 2.6vh;
+            box-shadow: 2px 2px 2px white;
         }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-
-            50% {
-                transform: translateY(-20px);
-            }
-
-            100% {
-                transform: translateY(0px);
-            }
-        }
-
-        .floating {
-            animation: float 6s ease-in-out infinite;
-        }
+       
     </style>
 </head>
 
 <body class="bg-[#121212] text-white min-h-screen font-mono">
-    <div class="container mx-auto px-4 py-8">
+    <div class="container mx-auto px-4 py-8 relative">
+        <a href="/auth/logout" class="logout-btn absolute top-10 right-6 rounded-md bg-red-500 text-white font-medium">Logout</a>
         <h1
-            class="text-5xl md:text-7xl font-extrabold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-[#7E30E1] to-[#E26EE5] animate-gradient-x-slow">
+            class="text-5xl md:text-7xl font-extrabold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-[#7E30E1] to-[#E26EE5]">
             <%= question.title %>
         </h1>
 
         <div class="editor-container grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div
-                class="editor bg-[#202026] rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-2xl relative">
+            <div class="editor bg-[#202026] rounded-xl shadow-lg overflow-hidden relative">
                 <div class="bg-[#18181E] p-4 flex justify-between items-center">
                     <h2 class="text-2xl font-semibold text-[#7E30E1]">
                         Code Editor
@@ -105,8 +89,7 @@
                 </div>
                 <div id="codeEditor" class="w-full h-96"></div>
             </div>
-            <div
-                class="error bg-[#202026] rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-2xl">
+            <div class="error bg-[#202026] rounded-xl shadow-lg overflow-hidden">
                 <div class="bg-[#18181E] p-4">
                     <h2 class="text-2xl font-semibold text-[#7E30E1]">
                         Error Input
@@ -115,10 +98,13 @@
                 <textarea id="errorInput"
                     class="w-full h-48 bg-[#121212] text-[#F3F8FF] p-4 resize-none focus:outline-none focus:ring-2 focus:ring-[#7E30E1]"></textarea>
                 <div class="p-4">
-                    <button id="analyzeBtn"
-                        class="btn bg-[#7E30E1] hover:bg-[#49108B] text-white font-bold py-2 px-4 rounded-full w-full transition-all duration-300 transform hover:scale-105">
-                        Analyze
-                    </button>
+                <button id="analyzeBtn"
+                    class="bg-[#7E30E1] text-white font-bold py-2 px-4 rounded-full w-full 
+                               transform transition duration-200 ease-in-out hover:scale-105 hover:-rotate-1 
+                               shadow-[rgba(44,187,99,_.2)_0_-25px_18px_-14px_inset,rgba(44,187,99,_.15)_0_1px_2px,rgba(44,187,99,_.15)_0_2px_4px,rgba(44,187,99,_.15)_0_4px_8px,rgba(44,187,99,_.15)_0_8px_16px,rgba(44,187,99,_.15)_0_16px_32px]
+                               hover:shadow-[rgba(44,187,99,_.35)_0_-25px_18px_-14px_inset,rgba(44,187,99,_.25)_0_1px_2px,rgba(44,187,99,_.25)_0_2px_4px,rgba(44,187,99,_.25)_0_4px_8px,rgba(44,187,99,_.25)_0_8px_16px,rgba(44,187,99,_.25)_0_16px_32px]">
+                    Analyze
+                </button>
                 </div>
                 <div id="aiResponse" class="mt-4 p-4 hidden">
                     <h2 class="text-2xl font-semibold mb-4 text-[#7E30E1]">
@@ -131,13 +117,10 @@
         </div>
     </div>
 
-    <!-- You likely will not be needing this unless it relates to feedback 
-   - for an edu website it could represent the user's current state or 
-   - knowledge, feel free to re-purpose as needed. Make sure paths for static assets are set up correctly in Express!
-   -->
     <div class="character fixed bottom-0 right-0 w-40 h-40 bg-contain bg-no-repeat bg-center cursor-pointer floating"
         style="background-image: url('/images/character.png');">
     </div>
+</body>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
