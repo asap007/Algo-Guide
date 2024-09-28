@@ -47,27 +47,45 @@
             transform: translateY(-2px) scale(1);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
-        #analyzeBtn
-        {
-            box-shadow:2px 3px 2px #f0c9ec;
+
+        #analyzeBtn {
+            box-shadow: 2px 3px 2px #f0c9ec;
             width: 260px;
             font-size: 2.9vh;
             font-weight: 500;
             margin-left: 450px;
         }
-        .logout-btn
-        {
+
+        .logout-btn {
             padding: 10px 25px;
             font-size: 2.6vh;
             box-shadow: 2px 2px 2px white;
         }
-       
+
+        .img-container {
+            position: absolute;
+            right: 4%;
+            top: 7%;
+            transition: all cubic-bezier(0.19, 1, 0.22, 1) 1s;
+        }
+
+        .img-container img {
+            height: 40px;
+        }
+
+        ::selection {
+            color: white;
+        }
     </style>
 </head>
 
 <body class="bg-[#121212] text-white min-h-screen font-mono">
     <div class="container mx-auto px-4 py-8 relative">
-        <a href="/auth/logout" class="logout-btn absolute top-10 right-6 rounded-md bg-red-500 text-white font-medium">Logout</a>
+        <div class="img-container">
+            <img src="../images/btn-image.png" alt="">
+        </div>
+        <a href="/auth/logout"
+            class="logout-btn absolute top-10 right-6 rounded-md bg-red-500 text-white font-medium">Logout</a>
         <h1
             class="text-5xl md:text-7xl font-extrabold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-[#7E30E1] to-[#E26EE5]">
             <%= question.title %>
@@ -98,13 +116,10 @@
                 <textarea id="errorInput"
                     class="w-full h-48 bg-[#121212] text-[#F3F8FF] p-4 resize-none focus:outline-none focus:ring-2 focus:ring-[#7E30E1]"></textarea>
                 <div class="p-4">
-                <button id="analyzeBtn"
-                    class="bg-[#7E30E1] text-white font-bold py-2 px-4 rounded-full w-full 
-                               transform transition duration-200 ease-in-out hover:scale-105 hover:-rotate-1 
-                               shadow-[rgba(44,187,99,_.2)_0_-25px_18px_-14px_inset,rgba(44,187,99,_.15)_0_1px_2px,rgba(44,187,99,_.15)_0_2px_4px,rgba(44,187,99,_.15)_0_4px_8px,rgba(44,187,99,_.15)_0_8px_16px,rgba(44,187,99,_.15)_0_16px_32px]
-                               hover:shadow-[rgba(44,187,99,_.35)_0_-25px_18px_-14px_inset,rgba(44,187,99,_.25)_0_1px_2px,rgba(44,187,99,_.25)_0_2px_4px,rgba(44,187,99,_.25)_0_4px_8px,rgba(44,187,99,_.25)_0_8px_16px,rgba(44,187,99,_.25)_0_16px_32px]">
-                    Analyze
-                </button>
+                    <button id="analyzeBtn"
+                        class="btn bg-[#7E30E1] text-white font-bold py-2 px-4 rounded-full w-full ">
+                        Analyze
+                    </button>
                 </div>
                 <div id="aiResponse" class="mt-4 p-4 hidden">
                     <h2 class="text-2xl font-semibold mb-4 text-[#7E30E1]">
@@ -194,6 +209,17 @@
         setTimeout(() => {
             this.style.transform = '';
         }, 1000);
+    });
+
+    const imgContainer = document.querySelector(".img-container");
+    const logoutBtn = document.querySelector(".logout-btn");
+
+    logoutBtn.addEventListener("mouseenter", () => {
+        imgContainer.style.transform = "translateY(-42px)"; // Adjust the value for the desired movement
+    });
+
+    logoutBtn.addEventListener("mouseleave", () => {
+        imgContainer.style.transform = "translateY(0)"; // Reset to the original position
     });
 </script>
 </body>
