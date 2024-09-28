@@ -1,16 +1,39 @@
+// app.js or server.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
+const passport = require('passport');
+const session = require('express-session');
+const mongoose = require('mongoose');
 require('dotenv').config();
 
 const app = express();
+
+// Connect to MongoDB
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.log(err));
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Session setup
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+
+// Passport setup
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Passport config
+require('./config/passport')(passport);
 
 // View engine setup
 app.set('view engine', 'ejs');
@@ -19,9 +42,11 @@ app.set('views', path.join(__dirname, 'views'));
 // Routes
 const indexRouter = require('./routes/index');
 const questionRouter = require('./routes/question');
+const authRouter = require('./routes/auth');
 
 app.use('/', indexRouter);
 app.use('/question', questionRouter);
+app.use('/auth', authRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
