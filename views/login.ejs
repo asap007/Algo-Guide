@@ -1,28 +1,205 @@
-<!-- login.ejs -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>LearnHub - Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <style>
+        .matterJs {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0);
+            position: absolute;
+            top: 0%;
+            left: 0;
+        }
+
+        @keyframes changeShadowColor {
+            0% {
+                filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.5));
+            }
+
+            25% {
+                filter: drop-shadow(4px 4px 6px rgba(255, 0, 0, 0.5));
+            }
+
+            50% {
+                filter: drop-shadow(4px 4px 6px rgba(0, 255, 0, 0.5));
+            }
+
+            75% {
+                filter: drop-shadow(4px 4px 6px rgba(0, 0, 255, 0.5));
+            }
+
+            100% {
+                filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.5));
+            }
+        }
+
+        .form-container {
+            background-color: rgb(152 151 151 / 25%);
+            box-shadow: inset 0 0 0 200px rgb(255 255 255 / 8%);
+            animation: changeShadowColor 10s infinite linear;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center h-screen">
-    <div class="bg-white p-8 rounded-lg shadow-md w-96">
-        <h1 class="text-2xl font-bold mb-6 text-center">Login</h1>
-        <form action="/auth/login" method="POST">
-            <div class="mb-4">
-                <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
-                <input type="email" id="email" name="email" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
-            </div>
-            <div class="mb-6">
-                <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password:</label>
-                <input type="password" id="password" name="password" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
-            </div>
-            <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300">Login</button>
-        </form>
-        <p class="mt-4 text-center">Don't have an account? <a href="/auth/register" class="text-blue-500 hover:underline">Register</a></p>
-        <p class="mt-2 text-center">Or login with: <a href="/auth/google" class="text-blue-500 hover:underline">Google</a></p>
+
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="matterJs">
     </div>
+    <div class="form-container bg-white p-8 rounded-xl shadow-lg w-full max-w-md relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-purple-500"></div>
+
+        <div class="text-center mb-8">
+            <img src="../images/logo.png" alt="LearnHub Logo" class="mx-auto mb-4 rounded-full shadow-md h-16">
+            <h1 class="text-3xl font-bold text-gray-800">What’s cooking, thought leader? 🍳</h1>
+        </div>
+
+        <form action="/auth/login" method="POST" class="space-y-6">
+            <div>
+                <label for="email" class="block text-gray-700 text-sm font-semibold mb-2">Email</label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email address"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300">
+            </div>
+            <div>
+                <label for="password" class="block text-gray-700 text-sm font-semibold mb-2">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter your password"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300">
+            </div>
+            <button type="submit"
+                class="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-2 rounded-lg hover:from-blue-600 hover:to-purple-600 transition duration-300 transform hover:scale-105">
+                Login
+            </button>
+        </form>
+
+        <div class="mt-6 text-center">
+            <p class="text-gray-600">Don't have an account? <a href="/auth/register"
+                    class="text-blue-500 hover:underline font-semibold">Register</a></p>
+            <p class="mt-2 text-gray-600">Or login with:</p>
+            <div class="mt-2 flex justify-center space-x-4">
+                <a href="/auth/google"
+                    class="flex items-center justify-center w-10 h-10 bg-white border border-gray-300 rounded-full hover:bg-gray-100 transition duration-300">
+                    <img src="https://banner2.cleanpng.com/20180423/gkw/avesbl6oq.webp" alt="Google" class="w-6 h-6">
+                </a>
+                <a href="/auth/facebook"
+                    class="flex items-center justify-center w-10 h-10 bg-white border border-gray-300 rounded-full hover:bg-gray-100 transition duration-300">
+                    <img src="https://w7.pngwing.com/pngs/826/632/png-transparent-facebook-meta-facebook-logo-facebook-meta-social-media-app-3d-icon-thumbnail.png"
+                        alt="Facebook" class="w-6 h-6">
+                </a>
+            </div>
+        </div>
+
+        <div class="mt-8 text-center h-16 overflow-hidden">
+            <div id="quoteContainer" class="transition-all duration-500 ease-in-out">
+                <p id="quote" class="text-sm text-gray-500 font-bold"></p>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/two.js/0.7.6/two.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.14.2/matter.min.js"></script>
+    <script src="../scripts/matter.js"></script>
+    <script>
+        gsap.from(".bg-white", { duration: 1, y: 50, opacity: 0, ease: "power3.out" });
+        gsap.from("h1", { duration: 1, delay: 0.5, y: 20, opacity: 0, ease: "power3.out" });
+        gsap.from("form", { duration: 1, delay: 0.8, y: 20, opacity: 0, ease: "power3.out" });
+
+        const quotes = [
+            {
+                text: "A programmer's best friend is not a debugger, it's a well-organized data structure.  You can't debug chaos."
+            },
+            {
+                text: "If you're ever feeling lost, just remember: you're probably just stuck in a recursive loop."
+            },
+            {
+                text: "Why did the binary tree get sad? Because it had too many nodes to deal with."
+            },
+            {
+                text: "The best way to find out if you have a stack overflow? Keep pushing elements on your stack,  you'll soon know!"
+            },
+            {
+                text: "My code is like my dating life - full of arrays and loops.  Sometimes it crashes and burns, but I keep hoping for a successful merge sort."
+            },
+            {
+                text: "The most dangerous thing in the world is a pointer to a string that might be NULL."
+            },
+            {
+                text: "Heard about the programmer who kept getting error messages? They said they'd  'debug it later'...  Later never came!"
+            },
+            {
+                text: "If you're not sure if your code will work, add a comment saying 'This should work'.  It might."
+            },
+            {
+                text: "Programmer's  coffee order: extra caffeine, debug mode,  and no  errors, please!"
+            },
+            {
+                text: "Debugging code: Like chasing ghosts in a labyrinth of your own creation.  Sometimes you get lucky."
+            },
+            {
+                text: "I tried to explain to my non-programmer friend why a hash table is so useful.  I told them it's like finding your car key in a crowded parking lot!   They said it's easier if you don't lose the key."
+            },
+            {
+                text: "Life is full of recursion: you eat to live, you live to work, you work to eat."
+            },
+            {
+                text: "A programmer's sense of accomplishment: Successfully compiling a code without any errors -  and that's just for starters."
+            },
+            {
+                text: "Binary trees?  Sounds like a complicated way of making a to-do list. Just kidding. ... maybe."
+            },
+            {
+                text: "If life were like a stack, the older things would be at the bottom."
+            },
+            {
+                text: "If only we could use the  'CTRL + Z'  command in real life."
+            },
+            {
+                text: "A programmer's  life lesson:  It's always 'case-sensitive'. Be mindful of capitalization."
+            },
+            {
+                text: "What do you call an unordered list?  A messy situation.   What do you call a sorted list?  A masterpiece! "
+            },
+            {
+                text: "There are two ways to code:  You can code for yourself,  or you can code for the maintenance person coming after you.  The second option is a true test of  compassion."
+            },
+            {
+                text: "I used to have a problem with procrastination,  but I think I finally overcame it. ...  Now,  I leave everything till the last minute like a professional."
+            }
+        ];
+
+        let currentQuoteIndex = 0;
+
+        function updateQuote() {
+            const quoteElement = document.getElementById('quote');
+            const nextQuote = quotes[(currentQuoteIndex + 1) % quotes.length];
+
+            gsap.to("#quoteContainer", {
+                duration: 0.5,
+                y: "-=20",
+                opacity: 0,
+                ease: "power2.inOut",
+                onComplete: () => {
+                    quoteElement.innerHTML = `"${nextQuote.text}"`;
+                    gsap.to("#quoteContainer", {
+                        duration: 0.5,
+                        y: "+=20",
+                        opacity: 1,
+                        ease: "power2.inOut"
+                    });
+                }
+            });
+
+            currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+        }
+
+        // Set initial quote
+        document.getElementById('quote').innerHTML = `"${quotes[0].text}"`;
+
+        // Change quote every 10 seconds
+        setInterval(updateQuote, 10000);
+    </script>
 </body>
+
 </html>
