@@ -30,198 +30,235 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        .editor-container {
-            perspective: 1000px;
+        .button-30 {
+            align-items: center;
+            appearance: none;
+            background-color: #ffffff;
+            /* Red background */
+            border-radius: 4px;
+            border-width: 0;
+            box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+            box-sizing: border-box;
+            color: #000000;
+            /* White text */
+            cursor: pointer;
+            display: inline-flex;
+            font-family: "JetBrains Mono", monospace;
+            height: 48px;
+            justify-content: center;
+            line-height: 1;
+            overflow: hidden;
+            padding-left: 16px;
+            padding-right: 16px;
+            position: relative;
+            text-align: left;
+            text-decoration: none;
+            transition: box-shadow .15s, transform .15s;
+            user-select: none;
+            font-size: 18px;
         }
 
-        .editor,
-        .error {
-            transition: all 0.3s ease-in-out;
+        .button-30:focus {
+            box-shadow: #D6D6E7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
         }
 
-        .btn {
-            transition: all 0.3s ease-in-out;
+        .button-30:hover {
+            box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+            transform: translateY(-2px);
         }
 
-        .btn:hover {
-            transform: translateY(-2px) scale(1);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        .button-30:active {
+            box-shadow: #D6D6E7 0 3px 7px inset;
+            transform: translateY(2px);
+        }
+        .button-31 {
+            align-items: center;
+            appearance: none;
+            background-color: #6B21A8;
+            /* Red background */
+            border-radius: 4px;
+            border-width: 0;
+            box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+            box-sizing: border-box;
+            color: #ffffff;
+            /* White text */
+            cursor: pointer;
+            display: inline-flex;
+            font-family: "JetBrains Mono", monospace;
+            height: 48px;
+            justify-content: center;
+            line-height: 1;
+            overflow: hidden;
+            padding-left: 49px;
+            padding-right: 49px;
+            position: relative;
+            text-align: left;
+            text-decoration: none;
+            transition: box-shadow .15s, transform .15s;
+            user-select: none;
+            font-size: 28px;
         }
 
-        #analyzeBtn {
-            box-shadow: 2px 3px 2px #f0c9ec;
-            width: 260px;
-            font-size: 2.9vh;
-            font-weight: 500;
-            margin-left: 450px;
+        .button-31:focus {
+            box-shadow: #D6D6E7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
         }
 
-        .logout-btn {
-            padding: 10px 25px;
-            font-size: 2.6vh;
-            box-shadow: 2px 2px 2px white;
+        .button-31:hover {
+            box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+            transform: translateY(-2px);
         }
 
-        .img-container {
-            position: absolute;
-            right: 4%;
-            top: 7%;
-            transition: all cubic-bezier(0.19, 1, 0.22, 1) 1s;
-        }
-
-        .img-container img {
-            height: 40px;
+        .button-31:active {
+            box-shadow: #D6D6E7 0 3px 7px inset;
+            transform: translateY(2px);
         }
 
         ::selection {
             color: white;
         }
+
     </style>
 </head>
 
-<body class="bg-[#121212] text-white min-h-screen font-mono">
-    <div class="container mx-auto px-4 py-8 relative">
-        <div class="img-container">
-            <img src="../images/btn-image.png" alt="">
-        </div>
-        <a href="/auth/logout"
-            class="logout-btn absolute top-10 right-6 rounded-md bg-red-500 text-white font-medium">Logout</a>
-        <h1
-            class="text-5xl md:text-7xl font-extrabold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-[#7E30E1] to-[#E26EE5]">
-            <%= question.title %>
-        </h1>
+<body class="bg-gradient-to-r from-[#e2e8f0] to-[#f8fafc] text-gray-900 font-sans min-h-screen">
+    <!-- Horizontal Navigation -->
+    <header class="w-full p-6">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Left Section for Logo -->
+            <h2 class="text-3xl font-bold">LOGO</h2>
 
-        <div class="editor-container grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="editor bg-[#202026] rounded-xl shadow-lg overflow-hidden relative">
-                <div class="bg-[#18181E] p-4 flex justify-between items-center">
-                    <h2 class="text-2xl font-semibold text-[#7E30E1]">
-                        Code Editor
-                    </h2>
-                    <select id="languageSelect"
-                        class="bg-[#202026] text-white p-2 rounded-md border border-[#49108B] focus:outline-none focus:ring-2 focus:ring-[#7E30E1]">
+            <!-- Right Section for Logout Button -->
+            <nav class="flex items-center space-x-8">
+                <a class="button-30" role="button" href="/auth/logout">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="p-3"> <!-- Reduced padding -->
+        <!-- Welcome Message -->
+        <section class="mb-6 mt-[-50px] text-center"> <!-- Reduced margin -->
+            <h1 class="text-6xl font-bold mb-4 text-purple-800">Welcome Back, <span class="text-pink-600">Coder!</span>
+            </h1>
+            <p class="text-lg">You have 3 tasks to complete today. Keep going, you are almost there!</p>
+        </section>
+
+        <!-- Code Editor Section -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Code Editor -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-semibold">Code Editor</h2>
+                    <select id="languageSelect" class="bg-gray-100 text-gray-700 p-2 rounded-md border border-gray-300">
                         <option value="java" selected>Java</option>
                         <option value="python">Python</option>
                         <option value="cpp">C++</option>
                         <option value="javascript">JavaScript</option>
                     </select>
                 </div>
-                <div id="codeEditor" class="w-full h-96"></div>
-            </div>
-            <div class="error bg-[#202026] rounded-xl shadow-lg overflow-hidden">
-                <div class="bg-[#18181E] p-4">
-                    <h2 class="text-2xl font-semibold text-[#7E30E1]">
-                        Error Input
-                    </h2>
-                </div>
-                <textarea id="errorInput"
-                    class="w-full h-48 bg-[#121212] text-[#F3F8FF] p-4 resize-none focus:outline-none focus:ring-2 focus:ring-[#7E30E1]"></textarea>
-                <div class="p-4">
-                    <button id="analyzeBtn"
-                        class="btn bg-[#7E30E1] text-white font-bold py-2 px-4 rounded-full w-full ">
-                        Analyze
-                    </button>
-                </div>
-                <div id="aiResponse" class="mt-4 p-4 hidden">
-                    <h2 class="text-2xl font-semibold mb-4 text-[#7E30E1]">
-                        AI Feedback
-                    </h2>
-                    <div id="aiFeedback" class="prose p-4 bg-[#18181E] rounded-lg shadow-inner max-w-none">
-                    </div>
+                <!-- Increased height for the code editor box -->
+                <div id="codeEditor" class="w-full h-[330px] bg-gray-100 rounded-md p-4 mb-4"></div>
+
+                <!-- Demo Input Section -->
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Error Input</h3>
+                    <textarea class="w-full h-64 bg-gray-100 p-3 rounded-md"
+                        placeholder="Paste your error here..."></textarea>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="character fixed bottom-0 right-0 w-40 h-40 bg-contain bg-no-repeat bg-center cursor-pointer floating"
-        style="background-image: url('/images/character.png');">
-    </div>
-</body>
-</body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/python/python.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/clike/clike.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/xml/xml.min.js"></script>
+            <!-- Input & Output Section -->
+            <div class="grid gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-lg font-semibold text-gray-800">Input</h3>
+                    <textarea class="w-full h-36 bg-gray-100 p-3 rounded-md"></textarea>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-lg font-semibold text-gray-800">Expected Output</h3>
+                    <textarea class="w-full h-36 bg-gray-100 p-3 rounded-md"></textarea>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-lg font-semibold text-gray-800">Your Output</h3>
+                    <textarea class="w-full h-36 bg-gray-100 p-3 rounded-md"></textarea>
+                </div>
+            </div>
+        </section>
 
-<script>
-    const boilerplates = {
-        python: `def main():\n    # Your code here\n    pass\n\nif __name__ == "__main__":\n    main()\n`,
-        java: `public class Main {\n    public static void main(String[] args) {\n        // Your code here\n    }\n}\n`,
-        cpp: `#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}\n`,
-        javascript: `function main() {\n    // Your code here\n}\n\nmain();\n`
-    };
+        <!-- Analyze Button Section -->
+        <section class="mt-8 text-center">
+            <button
+                class="button-31">
+                Analyze
+            </button>
+        </section>
+    </main>
+    
 
-    const codeMirrorEditor = CodeMirror(document.getElementById('codeEditor'), {
-        mode: 'text/x-java',
-        theme: 'dracula',
-        lineNumbers: true,
-        autoCloseBrackets: true,
-        matchBrackets: true,
-        indentUnit: 4,
-        tabSize: 4,
-        indentWithTabs: true,
-        lineWrapping: true,
-    });
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/clike/clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/xml/xml.min.js"></script>
 
-    codeMirrorEditor.setValue(boilerplates['java']);
+    <script>
+        const boilerplates = {
+            python: `def main():\n    # Your code here\n    pass\n\nif __name__ == "__main__":\n    main()\n`,
+            java: `public class Main {\n    public static void main(String[] args) {\n        // Your code here\n    }\n}\n`,
+            cpp: `#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}\n`,
+            javascript: `function main() {\n    // Your code here\n}\n\nmain();\n`
+        };
 
-    document.getElementById('languageSelect').addEventListener('change', function () {
-        const selectedLanguage = this.value;
-        let mode;
-        switch (selectedLanguage) {
-            case 'python':
-                mode = 'python';
-                break;
-            case 'java':
-                mode = 'text/x-java';
-                break;
-            case 'cpp':
-                mode = 'text/x-c++src';
-                break;
-            case 'javascript':
-                mode = 'javascript';
-                break;
-        }
-        codeMirrorEditor.setOption('mode', mode);
-        codeMirrorEditor.setValue(boilerplates[selectedLanguage]);
-    });
+        const codeMirrorEditor = CodeMirror(document.getElementById('codeEditor'), {
+            mode: 'text/x-java',
+            theme: 'dracula',
+            lineNumbers: true,
+            autoCloseBrackets: true,
+            matchBrackets: true,
+            indentUnit: 4,
+            tabSize: 4,
+            indentWithTabs: true,
+            lineWrapping: true,
+        });
 
-    document.getElementById('analyzeBtn').addEventListener('click', async () => {
-        const code = codeMirrorEditor.getValue();
-        const error = document.getElementById('errorInput').value;
-        try {
-            const response = await fetch(`/question/<%= question.id %>/analyze`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ code, error, questionId: '<%= question.id %>' })
-            });
-            const data = await response.json();
-            document.getElementById('aiResponse').classList.remove('hidden');
-            document.getElementById('aiFeedback').innerHTML = data.analysis;
-        } catch (error) {
-            document.getElementById('aiResponse').classList.remove('hidden');
-            document.getElementById('aiFeedback').textContent = 'Error analyzing code: ' + error.message;
-        }
-    });
+        codeMirrorEditor.setValue(boilerplates['java']);
 
-    document.querySelector('.character').addEventListener('click', function () {
-        this.style.transform = 'scale(1.2) rotate(360deg)';
-        setTimeout(() => {
-            this.style.transform = '';
-        }, 1000);
-    });
+        document.getElementById('languageSelect').addEventListener('change', function () {
+            const selectedLanguage = this.value;
+            let mode;
+            switch (selectedLanguage) {
+                case 'python':
+                    mode = 'python';
+                    break;
+                case 'java':
+                    mode = 'text/x-java';
+                    break;
+                case 'cpp':
+                    mode = 'text/x-c++src';
+                    break;
+                case 'javascript':
+                    mode = 'javascript';
+                    break;
+            }
+            codeMirrorEditor.setOption('mode', mode);
+            codeMirrorEditor.setValue(boilerplates[selectedLanguage]);
+        });
 
-    const imgContainer = document.querySelector(".img-container");
-    const logoutBtn = document.querySelector(".logout-btn");
+        document.getElementById('analyzeBtn').addEventListener('click', async () => {
 
-    logoutBtn.addEventListener("mouseenter", () => {
-        imgContainer.style.transform = "translateY(-42px)"; // Adjust the value for the desired movement
-    });
+        });
 
-    logoutBtn.addEventListener("mouseleave", () => {
-        imgContainer.style.transform = "translateY(0)"; // Reset to the original position
-    });
-</script>
+
+        const imgContainer = document.querySelector(".img-container img");
+        const logoutBtn = document.querySelector(".logout-btn");
+
+        logoutBtn.addEventListener("mouseenter", () => {
+            imgContainer.style.transform = "translateY(-32px)"; // Adjust the value for the desired movement
+        });
+
+        logoutBtn.addEventListener("mouseleave", () => {
+            imgContainer.style.transform = "translateY(0)"; // Reset to the original position
+        });
+    </script>
 </body>
 
 </html>
