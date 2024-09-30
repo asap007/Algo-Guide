@@ -12,138 +12,207 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.2/cdn.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/default.min.css">
+    <style>
+        .button-30 {
+            align-items: center;
+            appearance: none;
+            background-color: #ffffff;
+            /* White background */
+            border-radius: 4px;
+            border-width: 0;
+            box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+            box-sizing: border-box;
+            color: #000000;
+            /* Black text */
+            cursor: pointer;
+            display: inline-flex;
+            font-family: "JetBrains Mono", monospace;
+            height: 48px;
+            justify-content: center;
+            line-height: 1;
+            overflow: hidden;
+            padding-left: 16px;
+            padding-right: 16px;
+            position: relative;
+            text-align: left;
+            text-decoration: none;
+            transition: box-shadow .15s, transform .15s;
+            user-select: none;
+            font-size: 18px;
+        }
+
+        .button-30:focus {
+            box-shadow: #D6D6E7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+        }
+
+        .button-30:hover {
+            box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+            transform: translateY(-2px);
+        }
+
+        .button-30:active {
+            box-shadow: #D6D6E7 0 3px 7px inset;
+            transform: translateY(2px);
+        }
+    </style>
 </head>
 
-<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen font-sans" x-data="assessmentApp()"
-    x-init="hljs.highlightAll()">
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen font-sans" x-data="assessmentApp()">
     <div class="container mx-auto px-4 py-8 flex items-center justify-center min-h-screen">
-        <!-- Initial Question Input Form -->
-        <div x-show="!showQuestions" class="w-full max-w-md">
-            <h1 class="text-5xl font-extrabold mb-8 text-center text-indigo-600 drop-shadow-md">
-                Algo<span class="text-blue-500">Guide</span>
-            </h1>
-            <div
-                class="bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all hover:scale-105 duration-300">
-                <div class="p-8">
-                    <h2 class="text-2xl font-semibold text-gray-800 mb-6">Start Your Coding Journey</h2>
-                    <form @submit.prevent="startAssessment" class="space-y-6">
-                        <div class="relative">
-                            <label for="question" class="block text-sm font-medium text-gray-700 mb-2">Enter LeetCode
-                                Question:</label>
-                            <input type="text" id="question" x-model="question" required
-                                class="block w-full px-4 py-3 rounded-md bg-gray-50 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 ease-in-out"
-                                placeholder="e.g., Two Sum, Binary Tree Inorder Traversal">
-                            <i class="fas fa-search absolute right-3 top-10 text-gray-400"></i>
-                        </div>
-                        <!-- Language Selection Dropdown -->
-                        <div class="relative">
-                            <label for="language" class="block text-sm font-medium text-gray-700 mb-2">Select Preferred
-                                Language:</label>
-                            <select id="language" x-model="selectedLanguage" required
-                                class="block w-full px-4 py-3 rounded-md bg-gray-50 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 ease-in-out">
-                                <option value="" disabled>Select a language</option>
-                                <option value="python">Python</option>
-                                <option value="java">Java</option>
-                                <option value="cpp">C++</option>
-                                <option value="javascript">JavaScript</option>
-                            </select>
-                        </div>
-                        <div class="mt-6">
-                            <button type="submit"
-                                class="w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 ease-in-out transform hover:-translate-y-1">
-                                <span>Start Session</span>
-                                <i class="fas fa-arrow-right ml-2"></i>
-                            </button>
-                        </div>
-                    </form>
+        <div class="w-full max-w-2xl">
+            <!-- Initial Question Input Form -->
+            <div x-show="!showQuestions && !showIntroModal" class="w-full max-w-md mx-auto">
+                <h1 class="text-5xl font-extrabold mb-8 text-center text-indigo-600 drop-shadow-md">
+                    Algo<span class="text-blue-500">Guide</span>
+                </h1>
+                <div
+                    class="bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all hover:scale-105 duration-300">
+                    <div class="p-8">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Start Your Coding Journey</h2>
+                        <form @submit.prevent="startAssessment" class="space-y-6">
+                            <div class="relative">
+                                <label for="question" class="block text-sm font-medium text-gray-700 mb-2">Enter
+                                    LeetCode
+                                    Question Number:</label>
+                                <input type="text" id="question" x-model="question" required
+                                    class="block w-full px-4 py-3 rounded-md bg-gray-50 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 ease-in-out"
+                                    placeholder="e.g., 1492, 98, 125, 1,......">
+                                <i class="fas fa-search absolute right-3 top-10 text-gray-400"></i>
+                            </div>
+                            <!-- Language Selection Dropdown -->
+                            <div class="relative">
+                                <label for="language" class="block text-sm font-medium text-gray-700 mb-2">Select
+                                    Preferred
+                                    Language:</label>
+                                <select id="language" x-model="selectedLanguage" required
+                                    class="block w-full px-4 py-3 rounded-md bg-gray-50 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 ease-in-out">
+                                    <option value="" disabled>Select a language</option>
+                                    <option value="python">Python</option>
+                                    <option value="java">Java</option>
+                                    <option value="cpp">C++</option>
+                                    <option value="javascript">JavaScript</option>
+                                </select>
+                            </div>
+                            <div class="mt-6">
+                                <button type="submit"
+                                    class="w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 ease-in-out transform hover:-translate-y-1">
+                                    <span>Start Session</span>
+                                    <i class="fas fa-arrow-right ml-2"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <p class="mt-8 text-center text-gray-600">Ready to enhance your problem-solving skills? Let's dive in!
+                </p>
+            </div>
+
+            <!-- Knowledge Assessment Explanation Modal -->
+            <div x-show="showIntroModal"
+                class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+                <div
+                    class="bg-white rounded-lg shadow-lg max-w-md mx-auto p-6 transform transition-all duration-300 ease-in-out">
+                    <h2 class="text-2xl font-semibold text-indigo-600 mb-4">Why Are We Asking These Questions?</h2>
+                    <p class="text-gray-700 mb-4">
+                        We want to understand your current knowledge of the topic. This helps us provide better,
+                        tailored prompts and explanations to make your coding experience even more effective. Don’t
+                        worry,
+                        there's no right or wrong answer here and we won't judge you for this!
+                    </p>
+                    <button @click="closeIntroModal" class="button-30 w-full text-white bg-indigo-600">Got It!</button>
+                       
                 </div>
             </div>
-            <p class="mt-8 text-center text-gray-600">Ready to enhance your problem-solving skills? Let's dive in!</p>
-        </div>
 
-        <!-- Assessment Questions -->
-        <div x-show="showQuestions" class="w-full max-w-2xl">
-            <template x-if="currentQuestionIndex < assessmentQuestions.length">
-                <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-                    <!-- Concept Question -->
-                    <div x-show="showConceptQuestion">
-                        <h3 class="text-xl font-semibold mb-4"
-                            x-text="assessmentQuestions[currentQuestionIndex].conceptQuestion"></h3>
-                        <div class="space-y-3">
-                            <button @click="handleConceptAnswer(true)"
-                                class="w-full text-left px-4 py-2 border border-gray-300 rounded-md hover:bg-indigo-100 transition duration-200">Yes</button>
-                            <button @click="handleConceptAnswer(false)"
-                                class="w-full text-left px-4 py-2 border border-gray-300 rounded-md hover:bg-indigo-100 transition duration-200">No</button>
-                        </div>
-                    </div>
-
-                    <!-- Multiple Choice Question -->
-                    <div x-show="showMultipleChoice">
-                        <h3 class="text-xl font-semibold mb-4"
-                            x-text="assessmentQuestions[currentQuestionIndex].multipleChoice.question"></h3>
-                        <div class="space-y-3">
-                            <template
-                                x-for="(option, key) in assessmentQuestions[currentQuestionIndex].multipleChoice.options"
-                                :key="key">
-                                <button @click="checkAnswer(key)"
-                                    class="w-full text-left px-4 py-2 border border-gray-300 rounded-md hover:bg-indigo-100 transition duration-200"
-                                    :class="{'bg-green-100': isCorrect === true && selectedAnswer === key, 'bg-red-100': isCorrect === false && selectedAnswer === key}">
-                                    <span x-text="key.toUpperCase() + ': ' + option"></span>
-                                </button>
-                            </template>
-                        </div>
-                    </div>
-
-                    <!-- Explanation -->
-                    <div x-show="showExplanation" class="mt-4">
-                        <!-- Feedback Message -->
-                        <div class="mb-4">
-                            <template x-if="isCorrect === true">
-                                <p class="text-green-600 font-semibold">Correct! Great job!</p>
-                            </template>
-                            <template x-if="isCorrect === false">
-                                <p class="text-red-600 font-semibold">Incorrect. Don't worry, keep learning!</p>
-                            </template>
-                            <template x-if="isCorrect === null">
-                                <!-- This handles the case when the user didn't attempt the multiple-choice question -->
-                                <p class="text-blue-600 font-semibold">Here's an explanation to help you understand:</p>
-                            </template>
-                        </div>
-
-                        <h4 class="text-lg font-semibold mb-2">Explanation:</h4>
-                        <p x-text="assessmentQuestions[currentQuestionIndex].explanation" class="text-gray-700"></p>
-                        <div class="mt-4">
-                            <h4 class="text-lg font-semibold mb-2">Code Example:</h4>
-                            <div class="overflow-x-auto">
-                                <pre><code class="language-python" x-text="assessmentQuestions[currentQuestionIndex].codeSnippet"></code></pre>
+            <!-- Assessment Questions -->
+            <div x-show="showQuestions" class="w-full max-w-2xl">
+                <template x-if="currentQuestionIndex < assessmentQuestions.length">
+                    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                        <!-- Concept Question -->
+                        <div x-show="showConceptQuestion">
+                            <h3 class="text-xl font-semibold mb-4"
+                                x-text="assessmentQuestions[currentQuestionIndex].conceptQuestion"></h3>
+                            <div class="space-y-3">
+                                <button @click="handleConceptAnswer(true)"
+                                    class="w-full text-left px-4 py-2 border border-gray-300 rounded-md hover:bg-indigo-100 transition duration-200">Yes</button>
+                                <button @click="handleConceptAnswer(false)"
+                                    class="w-full text-left px-4 py-2 border border-gray-300 rounded-md hover:bg-indigo-100 transition duration-200">No</button>
                             </div>
                         </div>
-                        <button @click="nextQuestion"
-                            class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200">Next
-                            Question</button>
+
+                        <!-- Multiple Choice Question -->
+                        <div x-show="showMultipleChoice">
+                            <h3 class="text-xl font-semibold mb-4"
+                                x-text="assessmentQuestions[currentQuestionIndex].multipleChoice.question"></h3>
+                            <div class="space-y-3">
+                                <template
+                                    x-for="(option, key) in assessmentQuestions[currentQuestionIndex].multipleChoice.options"
+                                    :key="key">
+                                    <button @click="checkAnswer(key)"
+                                        class="w-full text-left px-4 py-2 border border-gray-300 rounded-md hover:bg-indigo-100 transition duration-200"
+                                        :class="{'bg-green-100': isCorrect === true && selectedAnswer === key, 'bg-red-100': isCorrect === false && selectedAnswer === key}">
+                                        <span x-text="key.toUpperCase() + ': ' + option"></span>
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Explanation -->
+                        <div x-show="showExplanation" class="mt-4">
+                            <!-- Feedback Message -->
+                            <div class="mb-4">
+                                <template x-if="isCorrect === true">
+                                    <p class="text-green-600 font-semibold">Correct! Great job!</p>
+                                </template>
+                                <template x-if="isCorrect === false">
+                                    <p class="text-red-600 font-semibold">Incorrect. Don't worry, keep learning!</p>
+                                </template>
+                                <template x-if="isCorrect === null">
+                                    <!-- This handles the case when the user didn't attempt the multiple-choice question -->
+                                    <p class="text-blue-600 font-semibold">Here's an explanation to help you understand:
+                                    </p>
+                                </template>
+                            </div>
+
+                            <h4 class="text-lg font-semibold mb-2">Explanation:</h4>
+                            <p x-text="assessmentQuestions[currentQuestionIndex].explanation" class="text-gray-700"></p>
+                            <div class="mt-4">
+                                <h4 class="text-lg font-semibold mb-2">Code Example:</h4>
+                                <div class="overflow-x-auto">
+                                    <pre><code class="language-python" x-text="assessmentQuestions[currentQuestionIndex].codeSnippet"></code></pre>
+                                </div>
+                            </div>
+                            <button @click="nextQuestion"
+                                class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200">Next
+                                Question</button>
+                        </div>
                     </div>
+                </template>
+                <div x-show="currentQuestionIndex >= assessmentQuestions.length" class="text-center">
+                    <h3 class="text-2xl font-bold text-indigo-600 mb-4">Assessment Completed!</h3>
+                    <p class="text-gray-600 mb-6">Great job! You've completed all the assessment questions.</p>
+                    <a :href="'/question/' + encodeURIComponent(question)">
+                        <button @click="resetAssessment"
+                            class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition duration-200">
+                            Let's start with the question
+                        </button>
+                    </a>
+
                 </div>
-            </template>
-            <div x-show="currentQuestionIndex >= assessmentQuestions.length" class="text-center">
-                <h3 class="text-2xl font-bold text-indigo-600 mb-4">Assessment Completed!</h3>
-                <p class="text-gray-600 mb-6">Great job! You've completed all the assessment questions.</p>
-                <a :href="'/question/' + encodeURIComponent(question)">
-                    <button @click="resetAssessment" class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition duration-200">
-                        Let's start with the question
-                    </button>
-                </a>
-                
+            </div>
+
+            <div x-show="loading"
+                class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
+                <div class="bg-white p-5 rounded-lg shadow-lg text-center">
+                    <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mx-auto">
+                    </div>
+                    <p class="mt-4 text-gray-700">Preparing your session...</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div x-show="loading"
-        class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
-        <div class="bg-white p-5 rounded-lg shadow-lg text-center">
-            <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
-            <p class="mt-4 text-gray-700">Preparing your session...</p>
-        </div>
-    </div>
+
 
     <script>
         // Add this function to your existing script
@@ -155,17 +224,17 @@
                 },
                 body: JSON.stringify({ question, response }),
             })
-            .then(response => response.json())
-            .then(data => {
-                if (!data.success) {
-                    console.error('Failed to save response');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.success) {
+                        console.error('Failed to save response');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         }
-    
+
         document.addEventListener('alpine:init', () => {
             Alpine.data('assessmentApp', () => ({
                 question: '',
@@ -179,9 +248,15 @@
                 isCorrect: null,
                 loading: false,
                 showQuestions: false,
-    
+                showIntroModal: false, // Modal will only show after Start Session is clicked
+
                 startAssessment() {
-                    this.loading = true;
+                    this.showIntroModal = true; // Show the modal after start session is clicked
+                },
+
+                closeIntroModal() {
+                    this.showIntroModal = false; // Close modal after user acknowledges
+                    this.loading = true; // Proceed with starting the session
                     fetch('/start-session', {
                         method: 'POST',
                         headers: {
@@ -219,13 +294,12 @@
                             alert(`An error occurred: ${error.message}`);
                         });
                 },
-    
-                // Modified handleConceptAnswer function
+
                 handleConceptAnswer(knows) {
                     const question = this.assessmentQuestions[this.currentQuestionIndex].conceptQuestion;
                     const response = knows ? 'Yes' : 'No';
                     saveResponse(question, response);
-    
+
                     if (knows) {
                         this.showConceptQuestion = false;
                         this.showMultipleChoice = true;
@@ -235,25 +309,23 @@
                         this.isCorrect = null;
                     }
                 },
-    
-                // Modified checkAnswer function
+
                 checkAnswer(selectedKey) {
                     this.selectedAnswer = selectedKey;
                     const question = this.assessmentQuestions[this.currentQuestionIndex].multipleChoice.question;
                     const response = selectedKey;
                     saveResponse(question, response);
-    
+
                     const correctAnswer = this.assessmentQuestions[this.currentQuestionIndex].multipleChoice.correctAnswer;
                     this.isCorrect = selectedKey === correctAnswer;
                     this.showExplanation = true;
                     this.showMultipleChoice = false;
                 },
-    
+
                 nextQuestion() {
                     this.currentQuestionIndex++;
                     if (this.currentQuestionIndex < this.assessmentQuestions.length) {
                         this.resetQuestionState();
-                        // Re-highlight code blocks for new content
                         this.$nextTick(() => {
                             hljs.highlightAll();
                         });
@@ -276,7 +348,7 @@
             }));
         });
     </script>
-    
+
 </body>
 
 </html>
