@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Coding Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            90% { opacity: 1; }
+            95% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        .blinking {
+            animation: blink 4s infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="container mx-auto p-8 bg-white rounded-lg shadow-lg max-w-4xl">
+        <h1 class="text-3xl font-bold mb-6 text-center text-indigo-600">Interactive Coding Assistant</h1>
+        
+        <div class="flex items-start mb-8 space-x-8">
+            <div class="flex-1">
+                <div id="dialogue" class="bg-indigo-100 p-4 rounded-lg relative mb-4">
+                    <p id="dialogueText" class="text-lg"></p>
+                    <span class="absolute bottom-2 right-4 text-3xl blinking">|</span>
+                </div>
+                
+                <div id="questionContainer" class="mb-6 hidden">
+                    <p id="questionText" class="text-lg font-semibold mb-2"></p>
+                    <div id="options" class="space-y-2"></div>
+                </div>
+
+                <div id="feedbackContainer" class="mb-6 hidden">
+                    <p id="feedbackText" class="text-lg font-semibold"></p>
+                </div>
+
+                <button id="nextBtn" class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600 transition duration-300 hidden">Next</button>
+            </div>
+            
+            <div id="character" class="w-80 h-80">
+                <img src="/images/gif2.gif" alt="Coding Assistant" class="w-full h-full object-contain">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const character = document.getElementById('character');
+        const dialogueText = document.getElementById('dialogueText');
+        const questionContainer = document.getElementById('questionContainer');
+        const questionText = document.getElementById('questionText');
+        const options = document.getElementById('options');
+        const feedbackContainer = document.getElementById('feedbackContainer');
+        const feedbackText = document.getElementById('feedbackText');
+        const nextBtn = document.getElementById('nextBtn');
+
+        const questions = [
+            {
+                text: "What's the primary purpose of a 'for' loop in programming?",
+                options: [
+                    "To define a function",
+                    "To repeat a block of code a specific number of times",
+                    "To declare variables",
+                    "To import libraries"
+                ],
+                correctAnswer: 1
+            },
+            {
+                text: "Which data structure uses LIFO (Last In, First Out) principle?",
+                options: [
+                    "Queue",
+                    "Array",
+                    "Stack",
+                    "Linked List"
+                ],
+                correctAnswer: 2
+            },
+            // Add more questions here
+        ];
+
+        let currentQuestionIndex = 0;
+
+        function typeText(text, element, speed = 50) {
+            let i = 0;
+            element.textContent = '';
+            function type() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        function showQuestion(index) {
+            const question = questions[index];
+            questionText.textContent = question.text;
+            options.innerHTML = '';
+            question.options.forEach((option, i) => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.className = 'w-full text-left p-2 rounded bg-gray-200 hover:bg-gray-300 transition duration-300';
+                button.onclick = () => checkAnswer(i);
+                options.appendChild(button);
+            });
+            questionContainer.classList.remove('hidden');
+        }
+
+        function checkAnswer(selectedIndex) {
+            const question = questions[currentQuestionIndex];
+            if (selectedIndex === question.correctAnswer) {
+                feedbackText.textContent = "Great job! That's correct!";
+                feedbackText.className = 'text-lg font-semibold text-green-600';
+            } else {
+                feedbackText.textContent = "Oops! That's not quite right. The correct answer was: " + question.options[question.correctAnswer];
+                feedbackText.className = 'text-lg font-semibold text-red-600';
+            }
+            feedbackContainer.classList.remove('hidden');
+            nextBtn.classList.remove('hidden');
+        }
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                feedbackContainer.classList.add('hidden');
+                nextBtn.classList.add('hidden');
+                typeText("Here's another question for you!", dialogueText);
+                setTimeout(() => showQuestion(currentQuestionIndex), 2000);
+            } else {
+                typeText("Great job! You've completed all the questions.", dialogueText);
+                questionContainer.classList.add('hidden');
+                nextBtn.classList.add('hidden');
+            }
+        });
+
+        // Start the interaction
+        typeText("Hello! I'm your coding assistant. Let's go through some programming concepts together!", dialogueText);
+        setTimeout(() => {
+            typeText("Are you ready for the first question?", dialogueText);
+            setTimeout(() => showQuestion(currentQuestionIndex), 2000);
+        }, 4000);
+    </script>
+</body>
+</html>
