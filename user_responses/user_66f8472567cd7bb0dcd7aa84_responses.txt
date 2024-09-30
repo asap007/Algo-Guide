@@ -1,0 +1,13 @@
+2024-09-29T09:43:08.978Z - Question: Are you familiar with the concept of a binary search tree (BST)?, Response: Yes
+2024-09-29T09:43:09.698Z - Question: Which of the following properties defines a BST?, Response: b
+2024-09-29T09:43:10.811Z - Question: Are you familiar with the concept of a lowest common ancestor (LCA) in a binary tree?, Response: No
+2024-09-29T09:43:12.184Z - Question: Are you familiar with recursive algorithms?, Response: Yes
+2024-09-29T09:43:12.997Z - Question: Which of the following is NOT a characteristic of a recursive algorithm?, Response: d
+2024-09-29T09:52:59.300Z - Question: Are you familiar with the concept of binary search?, Response: Yes
+2024-09-29T09:53:00.177Z - Question: What is the time complexity of a binary search on a sorted array?, Response: c
+2024-09-29T09:53:01.850Z - Question: Are you familiar with using a binary search to find the leftmost or rightmost occurrence of a target value in a sorted array?, Response: Yes
+2024-09-29T09:53:02.785Z - Question: To find the leftmost occurrence of a target value, how should you adjust the binary search logic?, Response: d
+2024-09-29T09:53:05.575Z - Question: Are you familiar with the concept of a prefix sum?, Response: Yes
+2024-09-29T09:53:06.284Z - Question: What does a prefix sum array store?, Response: c
+2024-09-29T09:53:07.966Z - Question: Are you familiar with the idea of using a sliding window technique to efficiently process a sequence of data?, Response: Yes
+2024-09-29T09:53:08.527Z - Question: What is the core concept of a sliding window technique?, Response: d
