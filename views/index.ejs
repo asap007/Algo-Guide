@@ -54,6 +54,25 @@
             box-shadow: #D6D6E7 0 3px 7px inset;
             transform: translateY(2px);
         }
+
+        .code-editor {
+            font-family: 'Consolas', 'Monaco', 'Andale Mono', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .code-editor-content {
+            overflow-x: auto;
+        }
+
+        .code-editor-content pre {
+            margin: 0;
+        }
+
+        .hljs {
+            background: transparent;
+            padding: 0;
+        }
     </style>
 </head>
 
@@ -178,8 +197,17 @@
                             <p x-text="assessmentQuestions[currentQuestionIndex].explanation" class="text-gray-700"></p>
                             <div class="mt-4">
                                 <h4 class="text-lg font-semibold mb-2">Code Example:</h4>
-                                <div class="overflow-x-auto">
-                                    <pre><code class="language-python" x-text="assessmentQuestions[currentQuestionIndex].codeSnippet"></code></pre>
+                                <div class="code-editor rounded-md overflow-hidden">
+                                    <div
+                                        class="code-editor-header bg-gray-800 text-white px-4 py-2 text-sm flex items-center">
+                                        <span class="w-3 h-3 rounded-full bg-red-500 mr-2"></span>
+                                        <span class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></span>
+                                        <span class="w-3 h-3 rounded-full bg-green-500 mr-2"></span>
+                                        <span class="flex-grow" x-text="selectedLanguage"></span>
+                                    </div>
+                                    <div class="code-editor-content bg-gray-900 p-4">
+                                        <pre><code x-bind:class="'language-' + selectedLanguage" x-text="assessmentQuestions[currentQuestionIndex].codeSnippet"></code></pre>
+                                    </div>
                                 </div>
                             </div>
                             <button @click="nextQuestion"
@@ -330,6 +358,11 @@
                             hljs.highlightAll();
                         });
                     }
+                },
+
+                // Add this to your Alpine.js component initialization:
+                mounted() {
+                    hljs.highlightAll();
                 },
 
                 resetAssessment() {
