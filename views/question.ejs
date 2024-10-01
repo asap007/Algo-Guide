@@ -71,6 +71,7 @@
             box-shadow: #D6D6E7 0 3px 7px inset;
             transform: translateY(2px);
         }
+
         .button-31 {
             align-items: center;
             appearance: none;
@@ -116,7 +117,6 @@
         ::selection {
             color: white;
         }
-
     </style>
 </head>
 
@@ -185,17 +185,16 @@
         </section>
 
         <!-- Analyze Button Section -->
-         <form action="/handle-output">
+        <form action="/handle-output">
             <section class="mt-8 text-center">
-                <button
-                    class="button-31">
+                <button class="button-31">
                     Analyze
                 </button>
-                        </section>
-         </form>
-        
+            </section>
+        </form>
+
     </main>
-    
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
@@ -247,7 +246,28 @@
         });
 
         document.getElementById('analyzeBtn').addEventListener('click', async () => {
-        
+            const code = codeMirrorEditor.getValue();
+            const error = document.getElementById('errorInput').value;
+            try {
+                const response = await fetch(`/question/<%= question.id %>/analyze`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code, error, questionId: '<%= question.id %>' })
+                });
+
+                console.log('Raw Response:', response);
+
+                const data = await response.json();
+                console.log('Response Data:', data); 
+
+                document.getElementById('aiResponse').classList.remove('hidden');
+                document.getElementById('aiFeedback').innerHTML = data.analysis;
+            } catch (error) {
+                document.getElementById('aiResponse').classList.remove('hidden');
+                document.getElementById('aiFeedback').textContent = 'Error analyzing code: ' + error.message;
+                console.error('Fetch Error:', error); // Log the fetch error
+            }
+
         });
 
 
