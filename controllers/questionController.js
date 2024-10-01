@@ -148,6 +148,7 @@ exports.analyzeCode = async (req, res) => {
 
       const result = await model.generateContent(prompt);
       const analysis = result.response.text();
+      console.log(analysis);
 
     res.json({ analysis });
   } catch (error) {
