@@ -7,6 +7,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
+        body {
+            background-color: #f0f4f8;
+            background-image:
+                radial-gradient(#d1d5db 1px, transparent 1px),
+                radial-gradient(#d1d5db 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
         @keyframes float {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
@@ -34,7 +42,7 @@
         }
     </style>
 </head>
-<body class=" min-h-screen flex items-center justify-center p-4">
+<body class=" min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-50 to-indigo-100">
     <div class="container mx-auto p-4 sm:p-8 bg-white rounded-lg shadow-2xl max-w-4xl">
         <h1 class="text-2xl sm:text-4xl font-bold mb-6 text-center text-indigo-600">Algo-Guide: Interactive Learning Platform</h1>
         
