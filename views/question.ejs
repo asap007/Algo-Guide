@@ -76,6 +76,7 @@
             font-size: 1.75rem;
             color: #4f46e5;
         }
+<<<<<<< HEAD
         .editor textarea, .output-section textarea {
             width: 100%;
             height: 100px;
@@ -89,6 +90,18 @@
             display: inline-block;
             padding: 0.75rem 1.5rem;
             border-radius: 0.5rem;
+=======
+
+        .button-31 {
+            align-items: center;
+            appearance: none;
+            background-color: #6B21A8;
+            /* Red background */
+            border-radius: 4px;
+            border-width: 0;
+            box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+            box-sizing: border-box;
+>>>>>>> 1c6cf2930da353f66cbd7849880fc210b5400f48
             color: #ffffff;
             font-weight: bold;
             text-align: center;
@@ -170,7 +183,71 @@
         </div>
     </div>
 
+<<<<<<< HEAD
     <div class="character"></div>
+=======
+    <!-- Main Content Area -->
+    <main class="p-3"> <!-- Reduced padding -->
+        <!-- Welcome Message -->
+        <section class="mb-6 mt-[-50px] text-center"> <!-- Reduced margin -->
+            <h1 class="text-6xl font-bold mb-4 text-purple-800">Welcome Back, <span class="text-pink-600">Coder!</span>
+            </h1>
+            <p class="text-lg">You have 3 tasks to complete today. Keep going, you are almost there!</p>
+        </section>
+
+        <!-- Code Editor Section -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Code Editor -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-semibold">Code Editor</h2>
+                    <select id="languageSelect" class="bg-gray-100 text-gray-700 p-2 rounded-md border border-gray-300">
+                        <option value="java" selected>Java</option>
+                        <option value="python">Python</option>
+                        <option value="cpp">C++</option>
+                        <option value="javascript">JavaScript</option>
+                    </select>
+                </div>
+                <!-- Increased height for the code editor box -->
+                <div id="codeEditor" class="w-full h-[330px] bg-gray-100 rounded-md p-4 mb-4"></div>
+
+                <!-- Demo Input Section -->
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Error Input</h3>
+                    <textarea class="w-full h-64 bg-gray-100 p-3 rounded-md"
+                        placeholder="Paste your error here..."></textarea>
+                </div>
+            </div>
+
+            <!-- Input & Output Section -->
+            <div class="grid gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-lg font-semibold text-gray-800">Input</h3>
+                    <textarea class="w-full h-36 bg-gray-100 p-3 rounded-md"></textarea>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-lg font-semibold text-gray-800">Expected Output</h3>
+                    <textarea class="w-full h-36 bg-gray-100 p-3 rounded-md"></textarea>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-lg font-semibold text-gray-800">Your Output</h3>
+                    <textarea class="w-full h-36 bg-gray-100 p-3 rounded-md"></textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analyze Button Section -->
+        <form action="/handle-output">
+            <section class="mt-8 text-center">
+                <button class="button-31">
+                    Analyze
+                </button>
+            </section>
+        </form>
+
+    </main>
+
+>>>>>>> 1c6cf2930da353f66cbd7849880fc210b5400f48
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
@@ -312,6 +389,7 @@
         document.getElementById('analyzeBtn').addEventListener('click', async () => {
             const code = codeMirrorEditor.getValue();
             const error = document.getElementById('errorInput').value;
+<<<<<<< HEAD
             const testInput = document.getElementById('testInput').value;
             const expectedOutput = document.getElementById('expectedOutput').value;
             const actualOutput = document.getElementById('actualOutput').value;
@@ -363,6 +441,28 @@
                         <p>${error.message}</p>
                     </div>`;
             }
+=======
+            try {
+                const response = await fetch(`/question/<%= question.id %>/analyze`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code, error, questionId: '<%= question.id %>' })
+                });
+
+                console.log('Raw Response:', response);
+
+                const data = await response.json();
+                console.log('Response Data:', data); 
+
+                document.getElementById('aiResponse').classList.remove('hidden');
+                document.getElementById('aiFeedback').innerHTML = data.analysis;
+            } catch (error) {
+                document.getElementById('aiResponse').classList.remove('hidden');
+                document.getElementById('aiFeedback').textContent = 'Error analyzing code: ' + error.message;
+                console.error('Fetch Error:', error); // Log the fetch error
+            }
+
+>>>>>>> 1c6cf2930da353f66cbd7849880fc210b5400f48
         });
 
     </script>
