@@ -2,8 +2,7 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const User = require('../models/User');
-const fs = require('fs').promises;
-const path = require('path');
+
 
 exports.getHomePage = (req, res) => {
     res.render('index', { title: 'AlgoGuide' });
@@ -85,26 +84,24 @@ exports.startSession = async (req, res) => {
       }
     };
 
-exports.saveResponse = async (req, res) => {
-    const { question, response } = req.body;
-    const userId = req.user._id;
+    
 
-    try {
-        // Save to database
-        const user = await User.findById(userId);
-        user.assessments.push({ question, response });
-        await user.save();
-
-        // Save to file
-        const fileName = `user_${userId}_responses.txt`;
-        const filePath = path.join(__dirname, '..', 'user_responses', fileName);
-        const content = `${new Date().toISOString()} - Question: ${question}, Response: ${response}\n`;
-        
-        await fs.appendFile(filePath, content);
-
-        res.json({ success: true });
-    } catch (error) {
-        console.error('Error saving response:', error);
-        res.status(500).json({ error: 'Failed to save response' });
-    }
-};
+    exports.saveResponse = async (req, res) => {
+        const { question, response } = req.body;
+        const userId = req.user._id; // Assuming you're using passport for authentication
+    
+        try {
+            // Save to MongoDB
+            await User.findByIdAndUpdate(userId, {
+                $push: {
+                    assessments: { question, response }
+                }
+            });
+    
+            res.json({ success: true });
+        } catch (error) {
+            console.error('Error saving response:', error);
+            res.status(500).json({ success: false, error: 'Failed to save response' });
+        }
+    };
+    

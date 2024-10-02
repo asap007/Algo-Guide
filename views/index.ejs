@@ -274,7 +274,9 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    if (!data.success) {
+                    if (data.success) {
+                        console.log('Response saved successfully');
+                    } else {
                         console.error('Failed to save response');
                     }
                 })
@@ -282,6 +284,7 @@
                     console.error('Error:', error);
                 });
         }
+
 
         document.addEventListener('alpine:init', () => {
             Alpine.data('assessmentApp', () => ({
