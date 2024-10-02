@@ -1,32 +1,171 @@
-<!-- register.ejs -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>LearnHub - Register</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <style>
+        .matterJs {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0);
+            position: absolute;
+            top: 0%;
+            left: 0;
+        }
+
+        @keyframes changeShadowColor {
+            0% {
+                filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.5));
+            }
+            25% {
+                filter: drop-shadow(4px 4px 6px rgba(255, 0, 0, 0.5));
+            }
+            50% {
+                filter: drop-shadow(4px 4px 6px rgba(0, 255, 0, 0.5));
+            }
+            75% {
+                filter: drop-shadow(4px 4px 6px rgba(0, 0, 255, 0.5));
+            }
+            100% {
+                filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.5));
+            }
+        }
+
+        .form-container {
+            background-color: rgb(152 151 151 / 25%);
+            box-shadow: inset 0 0 0 200px rgb(255 255 255 / 8%);
+            animation: changeShadowColor 10s infinite linear;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center h-screen">
-    <div class="bg-white p-8 rounded-lg shadow-md w-96">
-        <h1 class="text-2xl font-bold mb-6 text-center">Register</h1>
-        <form action="/auth/register" method="POST">
-            <div class="mb-4">
-                <label for="username" class="block text-gray-700 text-sm font-bold mb-2">Username:</label>
-                <input type="text" id="username" name="username" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
-            </div>
-            <div class="mb-4">
-                <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
-                <input type="email" id="email" name="email" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
-            </div>
-            <div class="mb-6">
-                <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password:</label>
-                <input type="password" id="password" name="password" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
-            </div>
-            <button type="submit" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition duration-300">Register</button>
-        </form>
-        <p class="mt-4 text-center">Already have an account? <a href="/auth/login" class="text-blue-500 hover:underline">Login</a></p>
-        <p class="mt-2 text-center">Or register with: <a href="/auth/google" class="text-blue-500 hover:underline">Google</a></p>
+
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="matterJs">
     </div>
+    <div class="form-container bg-white p-8 rounded-xl shadow-lg w-full max-w-md relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-purple-500"></div>
+
+        <div class="text-center mb-8">
+            <img src="../images/logo.png" alt="LearnHub Logo" class="mx-auto mb-4 rounded-full shadow-md h-16">
+            <h1 class="text-3xl font-bold text-gray-800">Join the knowledge party! 🎉</h1>
+        </div>
+
+        <form action="/auth/register" method="POST" class="space-y-6">
+            <div>
+                <label for="username" class="block text-gray-700 text-sm font-semibold mb-2">Username</label>
+                <input type="text" id="username" name="username" required placeholder="Choose a username"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300">
+            </div>
+            <div>
+                <label for="email" class="block text-gray-700 text-sm font-semibold mb-2">Email</label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email address"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300">
+            </div>
+            <div>
+                <label for="password" class="block text-gray-700 text-sm font-semibold mb-2">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Create a password"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300">
+            </div>
+            <button type="submit"
+                class="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-2 rounded-lg hover:from-blue-600 hover:to-purple-600 transition duration-300 transform hover:scale-105">
+                Register
+            </button>
+        </form>
+
+        <div class="mt-6 text-center">
+            <p class="text-gray-600">Already have an account? <a href="/auth/login"
+                    class="text-blue-500 hover:underline font-semibold">Login</a></p>
+            <p class="mt-2 text-gray-600">Or register with:</p>
+            <div class="mt-2 flex justify-center space-x-4">
+                <a href="/auth/google"
+                    class="flex items-center justify-center w-10 h-10 bg-white border border-gray-300 rounded-full hover:bg-gray-100 transition duration-300">
+                    <img src="https://banner2.cleanpng.com/20180423/gkw/avesbl6oq.webp" alt="Google" class="w-6 h-6">
+                </a>
+            </div>
+        </div>
+
+        <div class="mt-8 text-center h-16 overflow-hidden">
+            <div id="quoteContainer" class="transition-all duration-500 ease-in-out">
+                <p id="quote" class="text-sm text-gray-500 font-bold"></p>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/two.js/0.7.6/two.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.14.2/matter.min.js"></script>
+    <script src="../scripts/matter.js"></script>
+    <script>
+        gsap.from(".bg-white", { duration: 1, y: 50, opacity: 0, ease: "power3.out" });
+        gsap.from("h1", { duration: 1, delay: 0.5, y: 20, opacity: 0, ease: "power3.out" });
+        gsap.from("form", { duration: 1, delay: 0.8, y: 20, opacity: 0, ease: "power3.out" });
+
+        const quotes = [
+            {
+                text: "Joining our community is like adding a new node to a binary tree - you'll grow in ways you never expected!"
+            },
+            {
+                text: "Welcome aboard! Your journey into knowledge starts here. No recursion required."
+            },
+            {
+                text: "Ready to compile your dreams? Register now and let's debug life together!"
+            },
+            {
+                text: "Our community is like a well-organized data structure - there's a place for everyone!"
+            },
+            {
+                text: "Sign up now and become part of our learning algorithm. Together, we'll solve any problem!"
+            },
+            {
+                text: "Registering is like initializing a new variable - you're setting yourself up for great things!"
+            },
+            {
+                text: "Join us and let's create a positive feedback loop of learning and growth!"
+            },
+            {
+                text: "Your registration is the first step in your learning iteration. Let's start the loop!"
+            },
+            {
+                text: "Become part of our learning network - where every connection increases our collective knowledge!"
+            },
+            {
+                text: "Sign up now and let's traverse the tree of knowledge together!"
+            }
+        ];
+
+        let currentQuoteIndex = 0;
+
+        function updateQuote() {
+            const quoteElement = document.getElementById('quote');
+            const nextQuote = quotes[(currentQuoteIndex + 1) % quotes.length];
+
+            gsap.to("#quoteContainer", {
+                duration: 0.5,
+                y: "-=20",
+                opacity: 0,
+                ease: "power2.inOut",
+                onComplete: () => {
+                    quoteElement.innerHTML = `"${nextQuote.text}"`;
+                    gsap.to("#quoteContainer", {
+                        duration: 0.5,
+                        y: "+=20",
+                        opacity: 1,
+                        ease: "power2.inOut"
+                    });
+                }
+            });
+
+            currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+        }
+
+        // Set initial quote
+        document.getElementById('quote').innerHTML = `"${quotes[0].text}"`;
+
+        // Change quote every 10 seconds
+        setInterval(updateQuote, 10000);
+    </script>
 </body>
+
 </html>
