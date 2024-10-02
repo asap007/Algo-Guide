@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= question.title %> - LeetCode Helper</title>
+    <title>
+        <%= question.title %> - LeetCode Helper
+    </title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
@@ -18,65 +20,72 @@
         }
 
         #aiResponse {
-        max-height: 500px;
-        overflow-y: auto;
-    }
-    
-    #aiFeedback {
-        font-size: 14px;
-        line-height: 1.6;
-    }
-    
-    #aiFeedback h3 {
-        color: #4F46E5;
-        font-size: 20px;
-        margin-bottom: 8px;
-    }
-    
-    #aiFeedback h4 {
-        color: #1F2937;
-        font-size: 16px;
-        margin-top: 16px;
-        margin-bottom: 8px;
-    }
-    
-    #aiFeedback ul {
-        margin-bottom: 12px;
-    }
-    
-    #aiFeedback li {
-        margin-bottom: 4px;
-    }
-    
-    .analysis-section {
-        margin-bottom: 20px;
-        padding: 12px;
-        border-radius: 8px;
-        background-color: #F3F4F6;
-    }
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        #aiFeedback {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        #aiFeedback h3 {
+            color: #4F46E5;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        #aiFeedback h4 {
+            color: #1F2937;
+            font-size: 16px;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+
+        #aiFeedback ul {
+            margin-bottom: 12px;
+        }
+
+        #aiFeedback li {
+            margin-bottom: 4px;
+        }
+
+        .analysis-section {
+            margin-bottom: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            background-color: #F3F4F6;
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
         }
+
         .editor-container {
             display: flex;
             gap: 2rem;
             justify-content: space-between;
         }
-        .editor, .output-section {
+
+        .editor,
+        .output-section {
             flex: 1;
             background: #ffffff;
             border-radius: 1rem;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             padding: 1.5rem;
         }
-        .editor h2, .output-section h2 {
+
+        .editor h2,
+        .output-section h2 {
             margin-bottom: 1rem;
             font-size: 1.75rem;
-            color: #4f46e5;
         }
-        .editor textarea, .output-section textarea {
+
+        .editor textarea,
+        .output-section textarea {
             width: 100%;
             height: 100px;
             border: 1px solid #e5e7eb;
@@ -85,26 +94,33 @@
             font-family: 'Courier New', Courier, monospace;
             margin-bottom: 1rem;
         }
+
         .btn {
             display: inline-block;
             padding: 0.75rem 1.5rem;
             border-radius: 0.5rem;
         }
+
         .btn-run {
             background: #10b981;
         }
+
         .btn-analyze {
             background: #3b82f6;
         }
+
         .btn:hover {
             transform: scale(1.05);
         }
+
         .btn-run:hover {
             background: #059669;
         }
+
         .btn-analyze:hover {
             background: #2563eb;
         }
+
         .character {
             position: fixed;
             bottom: 0;
@@ -115,73 +131,33 @@
             background-size: contain;
             animation: wave 2s infinite ease-in-out;
         }
+
         @keyframes wave {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0); }
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1 class="text-5xl font-extrabold text-center mb-8 text-indigo-600"><%= question.title %></h1>
-        <div class="editor-container">
-            <div class="editor">
-                <h2>Code Editor</h2>
-                <select id="languageSelect" class="w-full p-3 border border-gray-300 rounded-lg mb-4 bg-white shadow-sm">
-                    <option value="java" selected>Java</option>
-                    <option value="python">Python</option>
-                    <option value="cpp">C++</option>
-                    <option value="javascript">JavaScript</option>
-                </select>
-                <textarea id="codeEditor"></textarea>
-                <button id="executeBtn" class="btn btn-run mt-4">Run Code</button>
-            </div>
-            <div class="output-section">
-                <h2>Test Information</h2>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Input</label>
-                    <textarea id="testInput" placeholder="Enter your test input here"></textarea>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Expected Output</label>
-                    <textarea id="expectedOutput" placeholder="Enter the expected output"></textarea>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Your Output</label>
-                    <textarea id="actualOutput" placeholder="Your code's output will appear here" readonly></textarea>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Error Output</label>
-                    <textarea id="errorInput" placeholder="If your code produces any errors, they'll appear here"></textarea>
-                </div>
-                <button id="analyzeBtn" class="btn btn-analyze">Analyze</button>
-                <div id="aiResponse" class="mt-4 hidden">
-                    <h2 class="text-2xl font-semibold mb-4">AI Feedback</h2>
-                    <div id="aiFeedback" class="p-4 bg-gray-100 rounded-lg shadow-inner"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-<<<<<<< HEAD
-    <div class="character"></div>
-=======
-    <!-- Main Content Area -->
-    <main class="p-3"> <!-- Reduced padding -->
-        <!-- Welcome Message -->
-        <section class="mb-6 mt-[-50px] text-center"> <!-- Reduced margin -->
+    <div class="container p-3">
+        <section class="mb-6 mt-[1px] text-center"> <!-- Reduced margin -->
             <h1 class="text-6xl font-bold mb-4 text-purple-800">Welcome Back, <span class="text-pink-600">Coder!</span>
             </h1>
             <p class="text-lg">You have 3 tasks to complete today. Keep going, you are almost there!</p>
         </section>
-
-        <!-- Code Editor Section -->
         <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Code Editor -->
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <div class="flex justify-between items-center mb-4">
+            <div class="editor-container bg-white rounded-lg shadow-lg p-6">
+                <div class="editor flex justify-between items-center mb-4">
                     <h2 class="text-2xl font-semibold">Code Editor</h2>
                     <select id="languageSelect" class="bg-gray-100 text-gray-700 p-2 rounded-md border border-gray-300">
                         <option value="java" selected>Java</option>
@@ -192,44 +168,53 @@
                 </div>
                 <!-- Increased height for the code editor box -->
                 <div id="codeEditor" class="w-full h-[330px] bg-gray-100 rounded-md p-4 mb-4"></div>
-
                 <!-- Demo Input Section -->
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Error Input</h3>
-                    <textarea class="w-full h-64 bg-gray-100 p-3 rounded-md"
-                        placeholder="Paste your error here..."></textarea>
+                    <label class="block text-lg font-semibold text-gray-800 mb-2">Error Output</label>
+                    <textarea id="errorInput"
+                        placeholder="If your code produces any errors, they'll appear here"></textarea>
                 </div>
             </div>
 
-            <!-- Input & Output Section -->
-            <div class="grid gap-6">
+            <div class="output-section grid gap-6">
+                <h2 class="text-xl font-semibold text-gray-800">Test Information</h2>
                 <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-lg font-semibold text-gray-800">Input</h3>
-                    <textarea class="w-full h-36 bg-gray-100 p-3 rounded-md"></textarea>
+                    <label class="text-lg font-semibold text-gray-800">Input</label>
+                    <textarea class="w-full h-36 bg-gray-100 p-3 rounded-md" id="testInput"
+                        placeholder="Enter your test input here"></textarea>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-lg font-semibold text-gray-800">Expected Output</h3>
-                    <textarea class="w-full h-36 bg-gray-100 p-3 rounded-md"></textarea>
+                    <label class="text-lg font-semibold text-gray-800">Expected Output</label>
+                    <textarea class="w-full h-36 bg-gray-100 p-3 rounded-md" id="expectedOutput"
+                        placeholder="Enter the expected output"></textarea>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-lg font-semibold text-gray-800">Your Output</h3>
-                    <textarea class="w-full h-36 bg-gray-100 p-3 rounded-md"></textarea>
+                    <label class="text-lg font-semibold text-gray-800">Your Output</label>
+                    <textarea class="w-full h-36 bg-gray-100 p-3 rounded-md" id="actualOutput"
+                        placeholder="Your code's output will appear here" readonly></textarea>
                 </div>
             </div>
         </section>
 
-        <!-- Analyze Button Section -->
-        <form action="/handle-output">
+        <button id="analyzeBtn" class="btn btn-analyze">Analyze</button>
+        <div id="aiResponse" class="mt-4 hidden">
+            <h2 class="text-2xl font-semibold mb-4">AI Feedback</h2>
+            <div id="aiFeedback" class="p-4 bg-gray-100 rounded-lg shadow-inner"></div>
+        </div>
+
+        <!-- Analyze Button Section old one for analyze button -->
+        <!-- <form action="/handle-output">
             <section class="mt-8 text-center">
                 <button class="button-31">
                     Analyze
                 </button>
             </section>
-        </form>
+        </form> -->
 
-    </main>
 
->>>>>>> 1c6cf2930da353f66cbd7849880fc210b5400f48
+    </div>
+
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
@@ -277,7 +262,7 @@
         function formatAnalysis(analysisData) {
             // First, ensure we have valid data to work with
             const analysis = analysisData?.analysis || analysisData;
-            
+
             if (!analysis || typeof analysis !== 'object') {
                 return `<p class="text-red-500">Unable to process analysis data</p>
                         <pre class="mt-4 p-4 bg-gray-100 rounded overflow-auto">${JSON.stringify(analysisData, null, 2)}</pre>`;
@@ -374,15 +359,15 @@
             const testInput = document.getElementById('testInput').value;
             const expectedOutput = document.getElementById('expectedOutput').value;
             const actualOutput = document.getElementById('actualOutput').value;
-            
+
             const aiResponseElement = document.getElementById('aiResponse');
             const aiFeedbackElement = document.getElementById('aiFeedback');
-            
+
             try {
                 // Fetch user context
                 const userContextResponse = await fetch(`/user-context/<%= user._id %>`);
                 const userContextData = await userContextResponse.json();
-                
+
                 if (!userContextData.success) {
                     throw new Error('Failed to fetch user context');
                 }
@@ -397,14 +382,14 @@
                         expectedOutput,
                         actualOutput,
                         questionId: '<%= question.id %>',
-                        userContext: userContextData.responses 
+                        userContext: userContextData.responses
                     })
                 });
-                
+
                 const data = await response.json();
-                
+
                 aiResponseElement.classList.remove('hidden');
-                
+
                 if (data.error) {
                     aiFeedbackElement.innerHTML = `
                         <div class="text-red-500">
