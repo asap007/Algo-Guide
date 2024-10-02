@@ -7,13 +7,13 @@ const passport = require('passport');
 const session = require('express-session');
 const mongoose = require('mongoose');
 require('dotenv').config();
-
+const flash = require('connect-flash');
 const app = express();
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
+  .catch(err => console.error('MongoDB connection error:', err));
 
 // Middleware
 app.use(cors());
@@ -23,10 +23,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Session setup
 app.use(session({
-  secret: process.env.SESSION_SECRET,
+  secret: 'hello',
   resave: false,
   saveUninitialized: false
 }));
+
+app.use(flash());
 
 // Passport setup
 app.use(passport.initialize());
@@ -47,6 +49,7 @@ const authRouter = require('./routes/auth');
 app.use('/', indexRouter);
 app.use('/question', questionRouter);
 app.use('/auth', authRouter);
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {

@@ -10,9 +10,28 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.2/cdn.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/default.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-cpp.min.js"></script>
     <style>
+        .code-editor {
+            border-radius: 0.375rem;
+            overflow: hidden;
+        }
+
+        .code-editor pre {
+            margin: 0;
+        }
+
+        .code-editor code {
+            font-family: 'Consolas', 'Monaco', 'Andale Mono', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
         .button-30 {
             align-items: center;
             appearance: none;
@@ -133,10 +152,8 @@
                     class="bg-white rounded-lg shadow-lg max-w-md mx-auto p-6 transform transition-all duration-300 ease-in-out">
                     <h2 class="text-2xl font-semibold text-indigo-600 mb-4">Why Are We Asking These Questions?</h2>
                     <p class="text-gray-700 mb-4">
-                        We want to understand your current knowledge of the topic. This helps us provide better,
-                        tailored prompts and explanations to make your coding experience even more effective. Don’t
-                        worry,
-                        there's no right or wrong answer here and we won't judge you for this!
+                        We're eager to gauge your knowledge on this topic! Understanding your background helps us tailor
+                        our explanations to enhance your coding adventure. We won’t spill the beans on your cookie data to anyone!
                     </p>
                     <button @click="closeIntroModal" class="button-30 w-full text-white bg-indigo-600">Got It!</button>
                        
@@ -206,13 +223,14 @@
                                         <span class="flex-grow" x-text="selectedLanguage"></span>
                                     </div>
                                     <div class="code-editor-content bg-gray-900 p-4">
-                                        <pre><code x-bind:class="'language-' + selectedLanguage" x-text="assessmentQuestions[currentQuestionIndex].codeSnippet"></code></pre>
+                                        <div x-html="displayCodeSnippet()"></div>
                                     </div>
                                 </div>
                             </div>
                             <button @click="nextQuestion"
-                                class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200">Next
-                                Question</button>
+                                class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200">
+                                Next Question
+                            </button>
                         </div>
                     </div>
                 </template>
@@ -254,7 +272,9 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    if (!data.success) {
+                    if (data.success) {
+                        console.log('Response saved successfully');
+                    } else {
                         console.error('Failed to save response');
                     }
                 })
@@ -263,6 +283,7 @@
                 });
         }
 
+
         document.addEventListener('alpine:init', () => {
             Alpine.data('assessmentApp', () => ({
                 question: '',
@@ -270,6 +291,7 @@
                 assessmentQuestions: [],
                 currentQuestionIndex: 0,
                 showConceptQuestion: true,
+                codeMirror: null,
                 showMultipleChoice: false,
                 showExplanation: false,
                 selectedAnswer: null,
@@ -355,14 +377,16 @@
                     if (this.currentQuestionIndex < this.assessmentQuestions.length) {
                         this.resetQuestionState();
                         this.$nextTick(() => {
-                            hljs.highlightAll();
+                            Prism.highlightAll();
                         });
                     }
                 },
 
                 // Add this to your Alpine.js component initialization:
                 mounted() {
-                    hljs.highlightAll();
+                    this.$nextTick(() => {
+                        Prism.highlightAll();
+                    });
                 },
 
                 resetAssessment() {
@@ -377,6 +401,31 @@
                     this.showExplanation = false;
                     this.selectedAnswer = null;
                     this.isCorrect = null;
+                },
+
+                displayCodeSnippet() {
+                    const code = this.assessmentQuestions[this.currentQuestionIndex].codeSnippet;
+                    const language = this.getLanguageClass();
+                    return `<pre class="language-${language}"><code>${this.escapeHtml(code)}</code></pre>`;
+                },
+
+                getLanguageClass() {
+                    switch (this.selectedLanguage) {
+                        case 'javascript': return 'javascript';
+                        case 'python': return 'python';
+                        case 'java': return 'java';
+                        case 'cpp': return 'cpp';
+                        default: return 'javascript';
+                    }
+                },
+
+                escapeHtml(unsafe) {
+                    return unsafe
+                        .replace(/&/g, "&amp;")
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;")
+                        .replace(/"/g, "&quot;")
+                        .replace(/'/g, "&#039;");
                 }
             }));
         });
