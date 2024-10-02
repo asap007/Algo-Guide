@@ -17,6 +17,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-javascript.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-cpp.min.js"></script>
     <style>
+        .no-arrows {
+            -moz-appearance: textfield;
+            /* For Firefox */
+        }
+
+        .no-arrows::-webkit-outer-spin-button,
+        .no-arrows::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            /* For Chrome, Safari, Edge */
+            margin: 0;
+        }
+
         .code-editor {
             border-radius: 0.375rem;
             overflow: hidden;
@@ -125,10 +137,9 @@
                                 <label for="question" class="block text-sm font-medium text-gray-700 mb-2">Enter
                                     LeetCode
                                     Question Number:</label>
-                                <input type="text" id="question" x-model="question" required
-                                    class="block w-full px-4 py-3 rounded-md bg-gray-50 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 ease-in-out"
+                                <input type="number" id="question" x-model="question" required
+                                    class="block no-arrows w-full px-4 py-3 rounded-md bg-gray-50 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 ease-in-out"
                                     placeholder="e.g., 1492, 98, 125, 1,......">
-                                <i class="fas fa-search absolute right-3 top-10 text-gray-400"></i>
                             </div>
                             <!-- Language Selection Dropdown -->
                             <div class="relative">

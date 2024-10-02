@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Algo Guide</title>
+    <title>CodeQuest: Interactive Learning Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
@@ -36,7 +36,7 @@
 </head>
 <body class=" min-h-screen flex items-center justify-center p-4">
     <div class="container mx-auto p-4 sm:p-8 bg-white rounded-lg shadow-2xl max-w-4xl">
-        <h1 class="text-2xl sm:text-4xl font-bold mb-6 text-center text-indigo-600">CodeQuest: Interactive Learning Platform</h1>
+        <h1 class="text-2xl sm:text-4xl font-bold mb-6 text-center text-indigo-600">Algo-Guide: Interactive Learning Platform</h1>
         
         <div class="flex flex-col sm:flex-row items-start mb-8 space-y-4 sm:space-y-0 sm:space-x-8">
             <div class="flex-1 w-full sm:w-auto">
@@ -52,10 +52,15 @@
                 <div id="feedbackContainer" class="mb-6 hidden">
                     <p id="feedbackText" class="text-base sm:text-lg font-semibold"></p>
                 </div>
+                <button id="toggleSpeech" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300 mb-4">
+                    <i class="fas fa-volume-mute mr-2"></i>Enable Speech
+                </button>
+                
 
                 <button id="nextBtn" class="bg-indigo-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full hover:bg-indigo-600 transition duration-300 hidden">
                     Next <i class="fas fa-arrow-right ml-2"></i>
                 </button>
+                
             </div>
             
             <div id="character" class="w-full sm:w-80 h-80 floating">
@@ -76,6 +81,70 @@
         const feedbackContainer = document.getElementById('feedbackContainer');
         const feedbackText = document.getElementById('feedbackText');
         const nextBtn = document.getElementById('nextBtn');
+        const toggleSpeechBtn = document.getElementById('toggleSpeech');
+        const progressFill = document.getElementById('progressFill');
+
+        let speechSynthesis = window.speechSynthesis;
+        let speechEnabled = false;
+        let femaleVoice = null;
+
+        // Function to load voices and select a female voice
+        function loadVoices() {
+            return new Promise((resolve) => {
+                let voices = speechSynthesis.getVoices();
+                if (voices.length) {
+                    resolve(voices);
+                } else {
+                    speechSynthesis.onvoiceschanged = () => {
+                        voices = speechSynthesis.getVoices();
+                        resolve(voices);
+                    };
+                }
+            });
+        }
+
+        // Initialize voices
+        loadVoices().then((voices) => {
+            // Attempt to find a female voice
+            femaleVoice = voices.find(voice => {
+                return /female|woman|girl/i.test(voice.name) || /female|woman|girl/i.test(voice.lang);
+            });
+
+            // Fallback to default if no female voice is found
+            if (!femaleVoice) {
+                femaleVoice = speechSynthesis.getVoices().find(voice => voice.default) || null;
+            }
+        });
+
+        // Function to speak text with synchronization
+        function speak(text, typingSpeed) {
+            if (speechEnabled && femaleVoice) {
+                speechSynthesis.cancel(); // Stop any ongoing speech
+                let utterance = new SpeechSynthesisUtterance(text);
+                utterance.voice = femaleVoice;
+
+                // Calculate the speech rate based on typing speed
+                // Typing speed: 30ms per character
+                // Total typing time: 30ms * number of characters
+                // Speech rate is adjusted so that speech duration ≈ typing duration
+                const typingDuration = text.length * 30 / 1000; // in seconds
+                // Estimate speech duration at normal rate (rate=1) as text.length / 15 (assuming ~15 characters per second)
+                const estimatedSpeechDuration = text.length / 15;
+                const calculatedRate = estimatedSpeechDuration > 0 ? estimatedSpeechDuration / typingDuration : 1;
+                // Clamp the rate between 0.5 and 2 for better control
+                utterance.rate = Math.min(Math.max(calculatedRate, 0.5), 2);
+
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        toggleSpeechBtn.addEventListener('click', () => {
+            speechEnabled = !speechEnabled;
+            toggleSpeechBtn.innerHTML = speechEnabled ? 
+                '<i class="fas fa-volume-up mr-2"></i>Disable Speech' : 
+                '<i class="fas fa-volume-mute mr-2"></i>Enable Speech';
+        });
+
 
         let analysisData;
         let currentStep = 0;
@@ -90,21 +159,28 @@
             'encouragement'
         ];
 
-        function typeText(text, element, speed = 50) {
+        // Typing effect function
+        function typeText(text, element, speed = 30) {
             let i = 0;
             element.textContent = '';
-            function type() {
-                if (i < text.length) {
-                    element.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(type, speed);
-                } else {
-                    nextBtn.classList.remove('hidden');
+            return new Promise((resolve) => {
+                function type() {
+                    if (i < text.length) {
+                        element.textContent += text.charAt(i);
+                        i++;
+                        setTimeout(type, speed);
+                    } else {
+                        nextBtn.classList.remove('hidden');
+                        resolve();
+                    }
                 }
-            }
-            type();
+                type();
+            }).then(() => {
+                speak(text, speed);
+            });
         }
 
+        // Function to show interaction options
         function showInteraction(interactionData) {
             interactionText.textContent = interactionData.question;
             interactionOptions.innerHTML = '';
@@ -118,6 +194,7 @@
             interactionContainer.classList.remove('hidden');
         }
 
+        // Function to handle user interaction
         function handleInteraction(selectedOption, followUps) {
             let feedback;
             let isCorrect;
@@ -142,56 +219,70 @@
             feedbackContainer.classList.remove('hidden');
             nextBtn.classList.remove('hidden');
             interactionContainer.classList.add('hidden');
+            
+            speak(feedback, 30); // Speak the feedback with typing speed
         }
 
+
+        // Function to update progress bar
         function updateProgressBar() {
-            const progress = (currentStep / steps.length) * 100;
-            document.getElementById('progressFill').style.width = `${progress}%`;
+            const progress = ((currentStep) / steps.length) * 100;
+            progressFill.style.width = `${progress}%`;
         }
 
-        function showNextStep() {
+        // Function to display the next step
+        async function showNextStep() {
             if (currentStep < steps.length) {
                 const step = steps[currentStep];
                 const stepData = analysisData.analysis[step];
 
                 if (step === 'greeting') {
-                    typeText(stepData.message + " " + stepData.empathy, dialogueText);
+                    await typeText(stepData.message + " " + stepData.empathy, dialogueText);
                 } else if (step === 'knowledge_assessment') {
-                    typeText(stepData.for_each_unknown_topic.introduction + " " + stepData.for_each_unknown_topic.explanation, dialogueText);
+                    await typeText(stepData.for_each_unknown_topic.introduction + " " + stepData.for_each_unknown_topic.explanation, dialogueText);
                     setTimeout(() => {
                         showInteraction(stepData.for_each_unknown_topic.interactive_element);
-                    }, 2000);
+                    }, 1000);
                 } else if (step === 'problem_introduction') {
-                    typeText(stepData.summary + " " + stepData.real_world_connection, dialogueText);
+                    await typeText(stepData.summary + " " + stepData.real_world_connection, dialogueText);
                 } else if (step === 'code_analysis') {
-                    typeText(stepData.positive_feedback + " " + stepData.area_of_improvement, dialogueText);
+                    await typeText(stepData.positive_feedback + " " + stepData.area_of_improvement, dialogueText);
                 } else if (step === 'visualization_offer') {
-                    typeText(stepData.question + " " + stepData.visualization.explanation, dialogueText);
+                    await typeText(stepData.question + " " + stepData.visualization.explanation, dialogueText);
+                    // Optionally, you can add visualization display logic here
                 } else if (step === 'reflection_moment') {
-                    typeText(stepData.question + " " + stepData.insight, dialogueText);
+                    await typeText(stepData.question + " " + stepData.insight, dialogueText);
+                    setTimeout(() => {
+                        showInteraction({
+                            question: stepData.question,
+                            possible_user_responses: stepData.reflection_options || ["Yes", "No"],
+                            follow_ups: stepData.reflection_follow_ups || {}
+                        });
+                    }, 1000);
                 } else if (step === 'next_steps') {
-                    typeText(stepData.immediate_action + " " + stepData.learning_path, dialogueText);
+                    await typeText(stepData.immediate_action + " " + stepData.learning_path, dialogueText);
                 } else if (step === 'encouragement') {
-                    typeText(stepData.progress_acknowledgment + " " + stepData.motivational_quote + " " + stepData.invitation_for_questions, dialogueText);
+                    await typeText(stepData.progress_acknowledgment + " " + stepData.motivational_quote + " " + stepData.invitation_for_questions, dialogueText);
                 }
 
                 currentStep++;
                 updateProgressBar();
             } else {
-                typeText("Congratulations! You've completed this CodeQuest challenge. Ready for the next one?", dialogueText);
+                await typeText("🎉 Congratulations! You've completed this CodeQuest challenge. Ready for the next one?", dialogueText);
                 nextBtn.textContent = "New Challenge";
                 nextBtn.classList.remove('hidden');
                 updateProgressBar();
             }
         }
 
+        // Event listener for the Next button
         nextBtn.addEventListener('click', () => {
             feedbackContainer.classList.add('hidden');
             nextBtn.classList.add('hidden');
             showNextStep();
         });
 
-        // Start the interaction
+        // Fetch the analysis data and start the interaction
         fetch('/get-analysis-data')
             .then(response => {
                 if (!response.ok) {
