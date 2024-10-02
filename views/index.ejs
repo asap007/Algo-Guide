@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <%= title %>
+       Algo Guide
     </title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -92,12 +92,25 @@
             background: transparent;
             padding: 0;
         }
+
+        body {
+            background-color: #f0f4f8;
+            background-image:
+                radial-gradient(#d1d5db 1px, transparent 1px),
+                radial-gradient(#d1d5db 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
+
+        .transition-all {
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
 
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen font-sans" x-data="assessmentApp()">
     <div class="container mx-auto px-4 py-8 flex items-center justify-center min-h-screen">
-        <div class="w-full max-w-2xl">
+        <div class="w-full max-w-2xl  ">
             <!-- Initial Question Input Form -->
             <div x-show="!showQuestions && !showIntroModal" class="w-full max-w-md mx-auto">
                 <h1 class="text-5xl font-extrabold mb-8 text-center text-indigo-600 drop-shadow-md">
@@ -153,10 +166,10 @@
                     <h2 class="text-2xl font-semibold text-indigo-600 mb-4">Why Are We Asking These Questions?</h2>
                     <p class="text-gray-700 mb-4">
                         We're eager to gauge your knowledge on this topic! Understanding your background helps us tailor
-                        our explanations to enhance your coding adventure. We won’t spill the beans on your cookie data to anyone!
+                        our explanations to enhance your coding adventure. We won’t spill the beans on your cookie data
+                        to anyone!
                     </p>
                     <button @click="closeIntroModal" class="button-30 w-full text-white bg-indigo-600">Got It!</button>
-                       
                 </div>
             </div>
 
@@ -234,17 +247,32 @@
                         </div>
                     </div>
                 </template>
-                <div x-show="currentQuestionIndex >= assessmentQuestions.length" class="text-center">
-                    <h3 class="text-2xl font-bold text-indigo-600 mb-4">Assessment Completed!</h3>
-                    <p class="text-gray-600 mb-6">Great job! You've completed all the assessment questions.</p>
-                    <a :href="'/question/' + encodeURIComponent(question)">
-                        <button @click="resetAssessment"
-                            class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition duration-200">
-                            Let's start with the question
-                        </button>
-                    </a>
+                <div x-show="currentQuestionIndex >= assessmentQuestions.length"
+                    class="text-center bg-gradient-to-r from-green-100 to-indigo-100 p-8 rounded-xl shadow-lg max-w-md mx-auto">
+                    <div class="flex flex-col items-center">
+                        <!-- Achievement Badge Icon -->
+                        <div class="bg-indigo-500 text-white rounded-full p-4 mb-4 shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
 
+                        <!-- Title for Completion -->
+                        <h3 class="text-3xl font-bold text-indigo-700 mb-2">Congratulations!</h3>
+                        <p class="text-gray-700 mb-6">You've successfully completed the assessment.</p>
+
+                        <!-- Call to action button -->
+                        <a :href="'/question/' + encodeURIComponent(question)">
+                            <button @click="resetAssessment"
+                                class="px-8 py-3 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition duration-300 shadow-lg">
+                                Start a New Challenge!
+                            </button>
+                        </a>
+                    </div>
                 </div>
+
             </div>
 
             <div x-show="loading"

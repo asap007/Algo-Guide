@@ -4,79 +4,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= question.title %> - LeetCode Helper</title>
+    <title>
+        Algo Guide
+    </title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f9fafb;
             color: #333;
             margin: 0;
             padding: 0;
         }
 
-        #aiResponse {
-        max-height: 500px;
-        overflow-y: auto;
-    }
-    
-    #aiFeedback {
-        font-size: 14px;
-        line-height: 1.6;
-    }
-    
-    #aiFeedback h3 {
-        color: #4F46E5;
-        font-size: 20px;
-        margin-bottom: 8px;
-    }
-    
-    #aiFeedback h4 {
-        color: #1F2937;
-        font-size: 16px;
-        margin-top: 16px;
-        margin-bottom: 8px;
-    }
-    
-    #aiFeedback ul {
-        margin-bottom: 12px;
-    }
-    
-    #aiFeedback li {
-        margin-bottom: 4px;
-    }
-    
-    .analysis-section {
-        margin-bottom: 20px;
-        padding: 12px;
-        border-radius: 8px;
-        background-color: #F3F4F6;
-    }
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
         }
+
         .editor-container {
             display: flex;
             gap: 2rem;
             justify-content: space-between;
         }
-        .editor, .output-section {
+
+        .editor,
+        .output-section {
             flex: 1;
             background: #ffffff;
             border-radius: 1rem;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             padding: 1.5rem;
         }
-        .editor h2, .output-section h2 {
+
+        .editor h2,
+        .output-section h2 {
             margin-bottom: 1rem;
-            font-size: 1.75rem;
+            font-size: 2.5rem;
             color: #4f46e5;
+            font-weight: 700;
         }
-        .editor textarea, .output-section textarea {
+
+        .editor textarea,
+        .output-section textarea {
             width: 100%;
             height: 100px;
             border: 1px solid #e5e7eb;
@@ -85,51 +57,54 @@
             font-family: 'Courier New', Courier, monospace;
             margin-bottom: 1rem;
         }
+
         .btn {
             display: inline-block;
             padding: 0.75rem 1.5rem;
             border-radius: 0.5rem;
         }
+
         .btn-run {
             background: #10b981;
         }
+
         .btn-analyze {
             background: #3b82f6;
         }
+
         .btn:hover {
             transform: scale(1.05);
         }
+
         .btn-run:hover {
             background: #059669;
         }
+
         .btn-analyze:hover {
             background: #2563eb;
         }
-        .character {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            width: 200px;
-            height: 250px;
-            background: url('/api/placeholder/200/250') no-repeat center;
-            background-size: contain;
-            animation: wave 2s infinite ease-in-out;
-        }
-        @keyframes wave {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0); }
+
+        body {
+            background-color: #f0f4f8;
+            background-image:
+                radial-gradient(#d1d5db 1px, transparent 1px),
+                radial-gradient(#d1d5db 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1 class="text-5xl font-extrabold text-center mb-8 text-indigo-600"><%= question.title %></h1>
+        <h1 class="text-5xl font-extrabold text-center mb-8 text-indigo-600">
+            <%= question.title %>
+        </h1>
         <div class="editor-container">
             <div class="editor">
                 <h2>Code Editor</h2>
-                <select id="languageSelect" class="w-full p-3 border border-gray-300 rounded-lg mb-4 bg-white shadow-sm">
+                <select id="languageSelect"
+                    class="w-full p-3 border border-gray-300 rounded-lg mb-4 bg-white shadow-sm">
                     <option value="java" selected>Java</option>
                     <option value="python">Python</option>
                     <option value="cpp">C++</option>
@@ -140,22 +115,23 @@
             <div class="output-section">
                 <h2>Test Information</h2>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Input</label>
+                    <label class="block text-lg font-bold text-gray-700 mb-2">Input</label>
                     <textarea id="testInput" placeholder="Enter your test input here"></textarea>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Expected Output</label>
+                    <label class="block text-lg font-bold text-gray-700 mb-2">Expected Output</label>
                     <textarea id="expectedOutput" placeholder="Enter the expected output"></textarea>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Your Output</label>
-                    <textarea id="actualOutput" placeholder="Your code's output will appear here" readonly></textarea>
+                    <label class="block text-lg font-bold text-gray-700 mb-2">Your Output</label>
+                    <textarea id="actualOutput" placeholder="Your code's output will appear here"></textarea>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Error Output</label>
-                    <textarea id="errorInput" placeholder="If your code produces any errors, they'll appear here"></textarea>
+                    <label class="block text-lg font-bold text-gray-700 mb-2">Error Output</label>
+                    <textarea id="errorInput"
+                        placeholder="If your code produces any errors, they'll appear here"></textarea>
                 </div>
-                <button id="analyzeBtn" class="btn btn-analyze">Analyze</button>
+                <button id="analyzeBtn" class="btn btn-analyze text-white">Analyze</button>
                 <div id="aiResponse" class="mt-4 hidden">
                     <h2 class="text-2xl font-semibold mb-4">AI Feedback</h2>
                     <div id="aiFeedback" class="p-4 bg-gray-100 rounded-lg shadow-inner"></div>
@@ -210,7 +186,7 @@
         function formatAnalysis(analysisData) {
             // First, ensure we have valid data to work with
             const analysis = analysisData?.analysis || analysisData;
-            
+
             if (!analysis || typeof analysis !== 'object') {
                 return `<p class="text-red-500">Unable to process analysis data</p>
                         <pre class="mt-4 p-4 bg-gray-100 rounded overflow-auto">${JSON.stringify(analysisData, null, 2)}</pre>`;
@@ -302,71 +278,71 @@
 
         // Update the click event listener
         document.getElementById('analyzeBtn').addEventListener('click', async () => {
-                const analyzeBtn = document.getElementById('analyzeBtn');
-                const code = codeMirrorEditor.getValue();
-                const error = document.getElementById('errorInput').value;
-                const testInput = document.getElementById('testInput').value;
-                const expectedOutput = document.getElementById('expectedOutput').value;
-                const actualOutput = document.getElementById('actualOutput').value;
-                
-                const aiResponseElement = document.getElementById('aiResponse');
-                const aiFeedbackElement = document.getElementById('aiFeedback');
-                
-                try {
-                    // Show processing state
-                    analyzeBtn.disabled = true;
-                    analyzeBtn.textContent = 'Processing...';
-                    
-                    // Fetch user context
-                    const userContextResponse = await fetch(`/user-context/<%= user._id %>`);
-                    const userContextData = await userContextResponse.json();
-                    
-                    if (!userContextData.success) {
-                        throw new Error('Failed to fetch user context');
-                    }
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const code = codeMirrorEditor.getValue();
+            const error = document.getElementById('errorInput').value;
+            const testInput = document.getElementById('testInput').value;
+            const expectedOutput = document.getElementById('expectedOutput').value;
+            const actualOutput = document.getElementById('actualOutput').value;
 
-                    const response = await fetch(`/question/<%= question.id %>/analyze`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            code,
-                            error,
-                            testInput,
-                            expectedOutput,
-                            actualOutput,
-                            questionId: '<%= question.id %>',
-                            userContext: userContextData.responses 
-                        })
-                    });
-                    
-                    const data = await response.json();
-                    
-                    // Send the analysis data to the handle-output endpoint
-                    const handleOutputResponse = await fetch('/handle-output', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(data)
-                    });
+            const aiResponseElement = document.getElementById('aiResponse');
+            const aiFeedbackElement = document.getElementById('aiFeedback');
 
-                    if (handleOutputResponse.ok) {
-                        // Redirect to the handle-output page
-                        window.location.href = '/handle-output';
-                    } else {
-                        throw new Error('Failed to send data to handle-output');
-                    }
-                } catch (error) {
-                    aiResponseElement.classList.remove('hidden');
-                    aiFeedbackElement.innerHTML = `
+            try {
+                // Show processing state
+                analyzeBtn.disabled = true;
+                analyzeBtn.textContent = 'Processing...';
+
+                // Fetch user context
+                const userContextResponse = await fetch(`/user-context/<%= user._id %>`);
+                const userContextData = await userContextResponse.json();
+
+                if (!userContextData.success) {
+                    throw new Error('Failed to fetch user context');
+                }
+
+                const response = await fetch(`/question/<%= question.id %>/analyze`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        code,
+                        error,
+                        testInput,
+                        expectedOutput,
+                        actualOutput,
+                        questionId: '<%= question.id %>',
+                        userContext: userContextData.responses
+                    })
+                });
+
+                const data = await response.json();
+
+                // Send the analysis data to the handle-output endpoint
+                const handleOutputResponse = await fetch('/handle-output', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (handleOutputResponse.ok) {
+                    // Redirect to the handle-output page
+                    window.location.href = '/handle-output';
+                } else {
+                    throw new Error('Failed to send data to handle-output');
+                }
+            } catch (error) {
+                aiResponseElement.classList.remove('hidden');
+                aiFeedbackElement.innerHTML = `
                         <div class="text-red-500">
                             <p class="font-bold">Error analyzing code:</p>
                             <p>${error.message}</p>
                         </div>`;
-                } finally {
-                    // Reset button state
-                    analyzeBtn.disabled = false;
-                    analyzeBtn.textContent = 'Analyze';
-                }
-            });
+            } finally {
+                // Reset button state
+                analyzeBtn.disabled = false;
+                analyzeBtn.textContent = 'Analyze';
+            }
+        });
 
 
 
