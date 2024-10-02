@@ -1,155 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Immersive Coding Quest</title>
+    <title>CodeQuest: Interactive Learning Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-        body {
-            min-height: 100vh;
-            overflow-y: auto;
-        }
-
         @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-
-            50% {
-                transform: translateY(-20px);
-            }
-
-            100% {
-                transform: translateY(0px);
-            }
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
         }
-
         .floating {
-            animation: float 6s ease-in-out infinite;
+            animation: float 3s ease-in-out infinite;
         }
-
-        @keyframes twinkle {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.5;
-            }
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
         }
-
-        .star {
-            position: fixed;
-            background-color: white;
-            border-radius: 50%;
-            animation: twinkle 2s infinite;
+        .typing-effect {
+            overflow: hidden;
+            border-right: .15em solid orange;
+            white-space: normal;
+            margin: 0 auto;
+            letter-spacing: .05em;
+            animation: 
+                blink-caret .75s step-end infinite;
         }
-
-        .meteor {
-            position: fixed;
-            background: linear-gradient(to bottom right, white, transparent);
-            transform: rotate(45deg);
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: orange; }
         }
     </style>
 </head>
-
-<body class="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 text-white">
-    <div id="stars"></div>
-    <div id="meteors"></div>
-
-    <div class="min-h-screen flex flex-col">
-        <header class="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white">
-            <h1 class="text-5xl font-bold text-center mb-2 animate-pulse">Cosmic Code</h1>
-            <p class="text-center text-xl">Embark on an intergalactic journey through the universe of coding!</p>
-        </header>
-
-        <main class="flex-grow p-6 overflow-y-auto" id="mainContent">
-            <div
-                class="container mx-auto bg-white/10 backdrop-blur-md rounded-xl shadow-2xl overflow-hidden max-w-4xl mb-8">
-                <div class="flex flex-col md:flex-row items-start gap-8 p-6">
-                    <div class="flex-1 space-y-6">
-                        <div id="dialogue" class="bg-white/20 backdrop-blur p-6 rounded-lg relative">
-                            <p id="dialogueText" class="text-lg font-medium">Welcome, cosmic coder! Are you ready to
-                                begin your quest?</p>
-                            <span class="absolute bottom-2 right-4 text-3xl animate-pulse">|</span>
-                        </div>
-
-                        <div id="questionContainer"
-                            class="hidden bg-yellow-300/20 backdrop-blur p-6 rounded-lg border-2 border-yellow-400">
-                            <h2 class="text-2xl font-bold mb-4 text-yellow-300">🌟 Stellar Challenge!</h2>
-                            <p id="questionText" class="text-lg font-semibold mb-4"></p>
-                            <div id="options" class="space-y-3">
-                                <!-- Options will be dynamically inserted here -->
-                            </div>
-                        </div>
-
-                        <div id="feedbackContainer"
-                            class="hidden bg-green-300/20 backdrop-blur p-6 rounded-lg border-2 border-green-400">
-                            <p id="feedbackText" class="text-lg font-semibold"></p>
-                        </div>
-
-                        <div id="nextBtnContainer" class="hidden mt-6 pb-6">
-                            <button id="nextBtn"
-                                class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-full text-lg font-bold hover:from-blue-600 hover:to-purple-700 transition duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
-                                Continue Cosmic Journey →
-                            </button>
-                        </div>
-                    </div>
-
-                    <div id="character" class="w-64 h-64 floating">
-                        <img src="../images/gif2.gif" alt="Cosmic Coding Wizard"
-                            class="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">
-                    </div>
+<body class="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 min-h-screen flex items-center justify-center p-4">
+    <div class="container mx-auto p-4 sm:p-8 bg-white rounded-lg shadow-2xl max-w-4xl">
+        <h1 class="text-2xl sm:text-4xl font-bold mb-6 text-center text-indigo-600">CodeQuest: Interactive Learning Platform</h1>
+        
+        <div class="flex flex-col sm:flex-row items-start mb-8 space-y-4 sm:space-y-0 sm:space-x-8">
+            <div class="flex-1 w-full sm:w-auto">
+                <div id="dialogue" class="bg-indigo-100 p-4 rounded-lg relative mb-4 h-48 overflow-y-auto">
+                    <p id="dialogueText" class="text-base sm:text-lg typing-effect"></p>
                 </div>
-            </div>
-        </main>
+                
+                <div id="interactionContainer" class="mb-6 hidden">
+                    <p id="interactionText" class="text-base sm:text-lg font-semibold mb-2"></p>
+                    <div id="interactionOptions" class="space-y-2"></div>
+                </div>
 
-        <footer class="bg-white/10 backdrop-blur p-4 text-center">
-            <p>© 2024 Cosmic Code Quest. Keep coding and explore the universe!</p>
-        </footer>
+                <div id="feedbackContainer" class="mb-6 hidden">
+                    <p id="feedbackText" class="text-base sm:text-lg font-semibold"></p>
+                </div>
+
+                <button id="nextBtn" class="bg-indigo-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full hover:bg-indigo-600 transition duration-300 hidden">
+                    Next <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+            
+            <div id="character" class="w-full sm:w-80 h-80 floating">
+                <img src="../images/gif2.gif" alt="Coding Assistant" class="w-full h-full object-contain">
+            </div>
+        </div>
+
+        <div id="progressBar" class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mt-4">
+            <div id="progressFill" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+        </div>
     </div>
 
     <script>
-        const character = document.getElementById('character');
         const dialogueText = document.getElementById('dialogueText');
-        const questionContainer = document.getElementById('questionContainer');
-        const questionText = document.getElementById('questionText');
-        const options = document.getElementById('options');
+        const interactionContainer = document.getElementById('interactionContainer');
+        const interactionText = document.getElementById('interactionText');
+        const interactionOptions = document.getElementById('interactionOptions');
         const feedbackContainer = document.getElementById('feedbackContainer');
         const feedbackText = document.getElementById('feedbackText');
         const nextBtn = document.getElementById('nextBtn');
-        const nextBtnContainer = document.getElementById('nextBtnContainer');
-        const mainContent = document.getElementById('mainContent');
 
-        const questions = [
-            {
-                text: "In the cosmic language of code, what's the primary purpose of a 'for' loop?",
-                options: [
-                    "To launch a space function",
-                    "To orbit a block of code a specific number of times",
-                    "To declare interstellar variables",
-                    "To import alien libraries"
-                ],
-                correctAnswer: 1
-            },
-            {
-                text: "Which cosmic data structure uses the LIFO (Last In, First Out) principle?",
-                options: [
-                    "Quantum Queue",
-                    "Nebula Array",
-                    "Galactic Stack",
-                    "Interstellar Linked List"
-                ],
-                correctAnswer: 2
-            },
-            // Add more space-themed questions here
+        let analysisData;
+        let currentStep = 0;
+        const steps = [
+            'greeting',
+            'problem_introduction',
+            'knowledge_assessment',
+            'code_analysis',
+            'visualization_offer',
+            'reflection_moment',
+            'next_steps',
+            'encouragement'
         ];
-
-        let currentQuestionIndex = 0;
 
         function typeText(text, element, speed = 50) {
             let i = 0;
@@ -159,95 +98,115 @@
                     element.textContent += text.charAt(i);
                     i++;
                     setTimeout(type, speed);
+                } else {
+                    nextBtn.classList.remove('hidden');
                 }
             }
             type();
         }
 
-        function showQuestion(index) {
-            const question = questions[index];
-            typeText(question.text, questionText);
-            options.innerHTML = '';
-            question.options.forEach((option, i) => {
+        function showInteraction(interactionData) {
+            interactionText.textContent = interactionData.question;
+            interactionOptions.innerHTML = '';
+            interactionData.possible_user_responses.forEach((option) => {
                 const button = document.createElement('button');
                 button.textContent = option;
-                button.className = 'w-full text-left p-3 rounded-lg bg-white/10 hover:bg-white/20 transition duration-300 shadow-md hover:shadow-lg text-white font-medium transform hover:scale-105';
-                button.onclick = () => checkAnswer(i);
-                options.appendChild(button);
+                button.className = 'w-full text-left p-2 rounded bg-gray-200 hover:bg-gray-300 transition duration-300';
+                button.onclick = () => handleInteraction(option, interactionData.follow_ups);
+                interactionOptions.appendChild(button);
             });
-            questionContainer.classList.remove('hidden');
+            interactionContainer.classList.remove('hidden');
         }
 
-        function checkAnswer(selectedIndex) {
-            const question = questions[currentQuestionIndex];
-            if (selectedIndex === question.correctAnswer) {
-                feedbackText.textContent = "Cosmic brilliance! Your code has unlocked new galaxies of knowledge!";
-                feedbackText.className = 'text-lg font-semibold text-green-300';
-                feedbackContainer.className = 'bg-green-500/20 backdrop-blur p-6 rounded-lg border-2 border-green-400';
+        function handleInteraction(selectedOption, followUps) {
+            let feedback;
+            let isCorrect;
+
+            if (selectedOption === "Got it") {
+                feedback = followUps.if_understood;
+                isCorrect = true;
+            } else if (selectedOption === "Not quite") {
+                feedback = followUps.if_not_understood;
+                isCorrect = false;
             } else {
-                feedbackText.textContent = "A temporary black hole in your logic. The correct answer was: " + question.options[question.correctAnswer];
-                feedbackText.className = 'text-lg font-semibold text-red-300';
-                feedbackContainer.className = 'bg-red-500/20 backdrop-blur p-6 rounded-lg border-2 border-red-400';
+                feedback = followUps.if_different_explanation_needed;
+                isCorrect = false;
             }
+            
+            feedbackText.innerHTML = `
+                <span class="${isCorrect ? 'text-green-500' : 'text-red-500'}">
+                    <i class="fas fa-${isCorrect ? 'check-circle' : 'times-circle'} mr-2"></i>
+                </span>
+                ${feedback}
+            `;
             feedbackContainer.classList.remove('hidden');
-            nextBtnContainer.classList.remove('hidden');
-            scrollToBottom();
+            nextBtn.classList.remove('hidden');
+            interactionContainer.classList.add('hidden');
         }
 
-        function scrollToBottom() {
-            setTimeout(() => {
-                mainContent.scrollTop = mainContent.scrollHeight;
-            }, 100);
+        function updateProgressBar() {
+            const progress = (currentStep / steps.length) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+        }
+
+        function showNextStep() {
+            if (currentStep < steps.length) {
+                const step = steps[currentStep];
+                const stepData = analysisData.analysis[step];
+
+                if (step === 'greeting') {
+                    typeText(stepData.message + " " + stepData.empathy, dialogueText);
+                } else if (step === 'knowledge_assessment') {
+                    typeText(stepData.for_each_unknown_topic.introduction + " " + stepData.for_each_unknown_topic.explanation, dialogueText);
+                    setTimeout(() => {
+                        showInteraction(stepData.for_each_unknown_topic.interactive_element);
+                    }, 2000);
+                } else if (step === 'problem_introduction') {
+                    typeText(stepData.summary + " " + stepData.real_world_connection, dialogueText);
+                } else if (step === 'code_analysis') {
+                    typeText(stepData.positive_feedback + " " + stepData.area_of_improvement, dialogueText);
+                } else if (step === 'visualization_offer') {
+                    typeText(stepData.question + " " + stepData.visualization.explanation, dialogueText);
+                } else if (step === 'reflection_moment') {
+                    typeText(stepData.question + " " + stepData.insight, dialogueText);
+                } else if (step === 'next_steps') {
+                    typeText(stepData.immediate_action + " " + stepData.learning_path, dialogueText);
+                } else if (step === 'encouragement') {
+                    typeText(stepData.progress_acknowledgment + " " + stepData.motivational_quote + " " + stepData.invitation_for_questions, dialogueText);
+                }
+
+                currentStep++;
+                updateProgressBar();
+            } else {
+                typeText("Congratulations! You've completed this CodeQuest challenge. Ready for the next one?", dialogueText);
+                nextBtn.textContent = "New Challenge";
+                nextBtn.classList.remove('hidden');
+                updateProgressBar();
+            }
         }
 
         nextBtn.addEventListener('click', () => {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
-                feedbackContainer.classList.add('hidden');
-                nextBtnContainer.classList.add('hidden');
-                typeText("Prepare for your next cosmic challenge!", dialogueText);
-                setTimeout(() => showQuestion(currentQuestionIndex), 2000);
-            } else {
-                typeText("Congratulations, cosmic coder! You've mastered the universe of programming!", dialogueText);
-                questionContainer.classList.add('hidden');
-                nextBtnContainer.classList.add('hidden');
-            }
-            scrollToBottom();
+            feedbackContainer.classList.add('hidden');
+            nextBtn.classList.add('hidden');
+            showNextStep();
         });
 
-        // Create stars and meteors (same as before)
-        // ...
-        // Create stars
-        const starsContainer = document.getElementById('stars');
-        for (let i = 0; i < 100; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            star.style.width = `${Math.random() * 3}px`;
-            star.style.height = star.style.width;
-            star.style.left = `${Math.random() * 100}%`;
-            star.style.top = `${Math.random() * 100}%`;
-            star.style.animationDelay = `${Math.random() * 2}s`;
-            starsContainer.appendChild(star);
-        }
-
-        // Create meteors
-        const meteorsContainer = document.getElementById('meteors');
-        for (let i = 0; i < 5; i++) {
-            const meteor = document.createElement('div');
-            meteor.className = 'meteor';
-            meteor.style.width = `${Math.random() * 100 + 50}px`;
-            meteor.style.height = '1px';
-            meteor.style.left = `${Math.random() * 100}%`;
-            meteor.style.top = `${Math.random() * 100}%`;
-            meteorsContainer.appendChild(meteor);
-        }
         // Start the interaction
-        typeText("Greetings, cosmic coder! Are you ready to explore the vast universe of programming?", dialogueText);
-        setTimeout(() => {
-            typeText("Prepare for your first interstellar challenge!", dialogueText);
-            setTimeout(() => showQuestion(currentQuestionIndex), 2000);
-        }, 4000);
+        fetch('/get-analysis-data')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                analysisData = data;
+                showNextStep();
+            })
+            .catch(error => {
+                console.error('Error fetching analysis data:', error);
+                dialogueText.textContent = "Sorry, there was an error loading the analysis data: " + error.message;
+            });
     </script>
 </body>
-
 </html>
