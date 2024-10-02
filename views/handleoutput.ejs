@@ -226,7 +226,7 @@
 
         // Function to update progress bar
         function updateProgressBar() {
-            const progress = (currentStep / steps.length) * 100;
+            const progress = ((currentStep) / steps.length) * 100;
             progressFill.style.width = `${progress}%`;
         }
 
@@ -249,8 +249,16 @@
                     await typeText(stepData.positive_feedback + " " + stepData.area_of_improvement, dialogueText);
                 } else if (step === 'visualization_offer') {
                     await typeText(stepData.question + " " + stepData.visualization.explanation, dialogueText);
+                    // Optionally, you can add visualization display logic here
                 } else if (step === 'reflection_moment') {
                     await typeText(stepData.question + " " + stepData.insight, dialogueText);
+                    setTimeout(() => {
+                        showInteraction({
+                            question: stepData.question,
+                            possible_user_responses: stepData.reflection_options || ["Yes", "No"],
+                            follow_ups: stepData.reflection_follow_ups || {}
+                        });
+                    }, 1000);
                 } else if (step === 'next_steps') {
                     await typeText(stepData.immediate_action + " " + stepData.learning_path, dialogueText);
                 } else if (step === 'encouragement') {
@@ -260,7 +268,7 @@
                 currentStep++;
                 updateProgressBar();
             } else {
-                await typeText("Congratulations! You've completed this CodeQuest challenge. Ready for the next one?", dialogueText);
+                await typeText("🎉 Congratulations! You've completed this CodeQuest challenge. Ready for the next one?", dialogueText);
                 nextBtn.textContent = "New Challenge";
                 nextBtn.classList.remove('hidden');
                 updateProgressBar();

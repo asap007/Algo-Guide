@@ -82,12 +82,12 @@ exports.analyzeCode = async (req, res) => {
       },
       "input_data": {
         "leetcode_question_number": ${questionId},
-        "user_context": ${userContext},
-        "code": ${code},
-        "error": ${error},
-        "input": ${testInput},
-        "expected_output": ${expectedOutput},
-        "actual_output": ${actualOutput}
+        "user_context": "${userContext}",
+        "code": "${code.replace(/"/g, '\\"')}",
+        "error": "${error.replace(/"/g, '\\"')}",
+        "input": "${testInput.replace(/"/g, '\\"')}",
+        "expected_output": "${expectedOutput.replace(/"/g, '\\"')}",
+        "actual_output": "${actualOutput.replace(/"/g, '\\"')}"
       },
       "response_structure": {
         "greeting": {
@@ -114,15 +114,15 @@ exports.analyzeCode = async (req, res) => {
             "practice_question": {
               "setup": "Brief scenario setting up the question",
               "question": "Multiple-choice question related to the topic",
-              "options": ["array of 4 string options"],
-              "correct_answer": "string (a, b, c, or d)",
+              "options": ["Option A", "Option B", "Option C", "Option D"],
+              "correct_answer": "A",
               "explanations": {
                 "correct": "Detailed explanation of why this is correct",
                 "incorrect": {
-                  "a": "Explanation if user chooses a",
-                  "b": "Explanation if user chooses b",
-                  "c": "Explanation if user chooses c",
-                  "d": "Explanation if user chooses d"
+                  "A": "Explanation if user chooses A",
+                  "B": "Explanation if user chooses B",
+                  "C": "Explanation if user chooses C",
+                  "D": "Explanation if user chooses D"
                 }
               }
             }
@@ -161,6 +161,7 @@ exports.analyzeCode = async (req, res) => {
         "error_handling": "If there's an error, guide the user to discover the issue themselves through a series of hints and questions.",
         "adaptive_response": "Adjust the depth and complexity of explanations based on the user's demonstrated knowledge and number of attempts.",
         "engagement_techniques": "Use a mix of questions, challenges, and encouragement to keep the user actively involved in the problem-solving process.",
+        "interactive_questions": "Ensure that every question includes multiple-choice options for user responses.",
         "time_management": "If the user has spent a long time, offer a quick break or a change of perspective to refresh their approach."
       }
     }`;
