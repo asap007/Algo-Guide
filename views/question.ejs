@@ -76,7 +76,6 @@
             font-size: 1.75rem;
             color: #4f46e5;
         }
-<<<<<<< HEAD
         .editor textarea, .output-section textarea {
             width: 100%;
             height: 100px;
@@ -90,23 +89,6 @@
             display: inline-block;
             padding: 0.75rem 1.5rem;
             border-radius: 0.5rem;
-=======
-
-        .button-31 {
-            align-items: center;
-            appearance: none;
-            background-color: #6B21A8;
-            /* Red background */
-            border-radius: 4px;
-            border-width: 0;
-            box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
-            box-sizing: border-box;
->>>>>>> 1c6cf2930da353f66cbd7849880fc210b5400f48
-            color: #ffffff;
-            font-weight: bold;
-            text-align: center;
-            cursor: pointer;
-            transition: background 0.3s, transform 0.3s;
         }
         .btn-run {
             background: #10b981;
@@ -389,7 +371,6 @@
         document.getElementById('analyzeBtn').addEventListener('click', async () => {
             const code = codeMirrorEditor.getValue();
             const error = document.getElementById('errorInput').value;
-<<<<<<< HEAD
             const testInput = document.getElementById('testInput').value;
             const expectedOutput = document.getElementById('expectedOutput').value;
             const actualOutput = document.getElementById('actualOutput').value;
@@ -441,28 +422,6 @@
                         <p>${error.message}</p>
                     </div>`;
             }
-=======
-            try {
-                const response = await fetch(`/question/<%= question.id %>/analyze`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ code, error, questionId: '<%= question.id %>' })
-                });
-
-                console.log('Raw Response:', response);
-
-                const data = await response.json();
-                console.log('Response Data:', data); 
-
-                document.getElementById('aiResponse').classList.remove('hidden');
-                document.getElementById('aiFeedback').innerHTML = data.analysis;
-            } catch (error) {
-                document.getElementById('aiResponse').classList.remove('hidden');
-                document.getElementById('aiFeedback').textContent = 'Error analyzing code: ' + error.message;
-                console.error('Fetch Error:', error); // Log the fetch error
-            }
-
->>>>>>> 1c6cf2930da353f66cbd7849880fc210b5400f48
         });
 
     </script>
