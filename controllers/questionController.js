@@ -6,7 +6,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 exports.getQuestion = async (req, res) => {
   const { id } = req.params;
-  const question = { id, title: 'Sample LeetCode Question', description: 'This is a sample question description.' };
+  const question = { id, title: 'Algo-Guide', description: 'This is a sample question description.' };
   const user = req.user || null;
 
   res.render('question', { question, user });
