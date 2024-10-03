@@ -1,7 +1,14 @@
 # 📚 Algo-Guide: Your Algorithm Learning Companion 🚀
 
-  
-  
+## 🌟 Key Features
+
+Algo-Guide isn't just another coding assistant - it's your personal AI tutor that adapts to your learning style. Meet Alex, your AI companion who doesn't just give you answers, but guides you to understanding through:
+
+* 🎯 Personalized Learning Paths: Based on your current knowledge level
+* 🔍 Socratic Teaching Method: Learns by questioning, not just answering
+* 🧩 Interactive Problem Breakdowns: Understand problems piece by piece
+* 🎓 Conceptual Deep Dives: Master the underlying patterns, not just solutions
+
 ## Table of Contents 
   
 * [🌟 Key Features](#key-features)
@@ -17,16 +24,7 @@
 * [🙏 Acknowledgments](#acknowledgments)
 * [📊 Project Stats](#project-stats) 
   
-  
-## 🌟 Key Features
 
-Algo-Guide is a platform designed to make learning algorithms and data structures an engaging and interactive experience. Its key features include:
-
-* **Interactive Algorithm Visualizations:** See algorithms in action with clear animations and explanations.
-* **Customizable Practice Problems:** Challenge yourself with a variety of practice problems designed to test your understanding.
-* **Detailed Solution Walkthroughs:** Get step-by-step explanations of solutions to practice problems, making learning more effective. 
-* **User-Friendly Interface:**  Intuitive navigation and design make it easy to find the content you need.
-* **Personalized Progress Tracking:** Track your progress, identify areas for improvement, and see how your skills grow.
 
   
 ## 🚀 Getting Started
@@ -63,14 +61,23 @@ Algo-Guide is a platform designed to make learning algorithms and data structure
    Open your web browser and navigate to `http://localhost:3000/`. 
 
   
-## 📘 Usage
+## ⚡ How It Works
 
-Algo-Guide offers a range of features to enhance your learning experience:
+1. 📝 **Input Your LeetCode Challenge**
+   * Enter the question number
+   * Choose your programming language
+   * Take a quick knowledge assessment
 
-* **Explore Algorithms:**  Navigate through the algorithm library to access interactive visualizations and detailed explanations for common algorithms like sorting, searching, graph traversal, and more.
-* **Practice with Problems:** Test your understanding with practice problems categorized by difficulty and algorithm type.
-* **Track Your Progress:**  Review your performance on practice problems and see how your knowledge is developing.
-* **Customize Your Learning:** Choose the algorithms and topics you want to focus on, and personalize your learning journey.
+2. 🔍 **Analyze Your Approach**
+   * Share your code attempt
+   * Provide error messages
+   * Describe expected vs. actual output
+
+3. 🎓 **Learn with Alex**
+   * Get intuitive explanations
+   * Engage with interactive MCQs
+   * Explore relevant examples and anecdotes
+   * Build deeper understanding through guided discovery
 
   
 ## 🏗️ Project Structure
